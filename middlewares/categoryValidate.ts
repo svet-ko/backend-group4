@@ -1,25 +1,19 @@
 import { NextFunction, Request, Response } from "express"
 import { z } from "zod"
 
-export const productSchema = z.object({
+const productSchema = z.object({
   body: z.object({
-    title: z.string({
-      required_error: "Title is required",
+    id: z.number({
+      required_error: "Id is required",
     }),
-    price: z
-      .number({
-        required_error: "Price is required",
-      })
-      .positive(),
+    name: z.string({
+      required_error: "Name is required",
+    }),
     description: z.string({
       required_error: "Description is required",
     }),
-    categoryId: z.number({
-      required_error: "CategoryId is required",
-    }),
-    image: z.string().optional(),
-  })
-})
+  }),
+});
 
 export async function validateProduct(
   req: Request,

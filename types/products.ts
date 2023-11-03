@@ -1,19 +1,24 @@
-// export type Product = {
-//   id: number
-//   name: string
-//   image: string
-//   description: string
-//   categories: number[]
-//   variants: string[]
-//   sizes: string[]
-// }
+import { z } from "zod";
+import { Category } from "./categories.js";
+import { productSchema } from '../middlewares/productValidate.js'
 
-import { z } from "zod"
+export type Product = {
+  id: number,
+  title: string,
+  price: number,
+  description: string,
+  category: Category,
+  images?: string[]
+}
 
-import { productSchema } from "../schemas/productSchema.js"
+export type ProductToCreate = {
+  title: string,
+  price: number,
+  description: string,
+  categoryId: number,
+  images?: string[]
+}
 
-// to get the type FROM the ZOD validation
-type ProductDTO = z.infer<typeof productSchema>
+export type ProductDTO = z.infer<typeof productSchema>
+export type VProductToCreate = ProductDTO & ProductToCreate;
 
-// we are adding an ID because, when we validate the data we don't care about the id. why?? because IDs are handled by the database
-export type Product = ProductDTO & { id: number }
