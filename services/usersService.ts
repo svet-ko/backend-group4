@@ -7,8 +7,8 @@ async function getAllUsers() {
   return users
 }
 
-async function getUserById(userId: number) {
-  const id = new mongoose.Types.ObjectId(userId.toString())
+async function getUserById(userId: string) {
+  const id = new mongoose.Types.ObjectId(userId)
   const user = await UsersRepo.findById(id)
   return user
 }

@@ -1,4 +1,43 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express"
+
+import UsersService from "../services/usersService.js"
+import { ApiError } from "../errors/ApiError.js"
+import { ObjectId } from "mongoose"
+
+export async function getAllUsers(_: Request, res: Response) {
+  const products = await UsersService.getAllUsers()
+
+  res.json({ products })
+}
+
+export async function getUserById(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const userId = req.params.userId
+  const user = await UsersService.getUserById(userId)
+  if (!user) {
+    next(ApiError.resourceNotFound("User not found."))
+    return
+  }
+  res.json({ user })
+}
+
+export async function createUser(req: Request, res: Response) {
+  const newUser = req.body
+  const user = await UsersService.createUser(newUser)
+  res.status(201).json({ user })
+}
+
+export default {
+  getAllUsers,
+  getUserById,
+  createUser,
+}
+
+
+/*import { NextFunction, Request, Response } from "express";
 import UserService from "../services/usersService.js";
 import { ApiError } from "../errors/ApiError.js";
 
@@ -90,4 +129,4 @@ export default {
   createUser,
   updateUser,
   deleteUser
-};
+};*/
