@@ -1,6 +1,6 @@
 import mongoose, { ObjectId } from "mongoose"
 import UsersRepo from "../models/User.js"
-import { User, UserDTO } from "../types/user.js"
+import { LoginRequest, User, UserDTO } from "../types/user.js"
 
 async function getAllUsers() {
   const users = await UsersRepo.find().exec()
@@ -18,55 +18,30 @@ async function createUser(user: UserDTO) {
   return await newUser.save()
 }
 
-export default {
-    getAllUsers,
-    getUserById,
-    createUser
-}
-
-/*import { UsersRepo } from "../models/User.js";
-import { LoginRequest, User, UserDTO } from "../types/user.js";
-import { generateId } from "../utils/generateId.js";
-
-
-function getUserById(userId: number): User | undefined {
-  const user = usersRepo.getUserById(userId);
+async function handleLogin(loginRequest: LoginRequest) {
+  const { email, password } = loginRequest.body
+  const user = await UsersRepo.findOne({ email, password});
   return user;
 }
 
-function handleLogin(loginRequest: LoginRequest) {
-    const isUser = usersRepo.checkUserByEmailAndPassword(loginRequest.password, loginRequest.email);
-    if (!isUser) {
-        return null;
-    }
-    return usersRepo.getUserByEmailAndPassword(loginRequest);
+async function updateUser(id: string, updatedUser: Partial<User>) {
+  const result = await UsersRepo.updateOne({ _id: id }, { $set: updatedUser });
+
+  if (!result) {
+    return null;
+  }
+  return await UsersRepo.findById(id);
 }
 
-function createUser(user: UserDTO): User | null {
-    const isUser = usersRepo.checkUserByEmailAndPassword(user.name, user.email);
-    if (isUser) {
-        return null;
-    } 
-    const users = usersRepo.getAllUsers()
-    const id = generateId(users);
-    const userData = {id, ...user}; 
-    const newUser = usersRepo.createUser(userData);
-    return newUser;
-}
-
-function updateUser(id: number, user: Partial<User>) {
-    return usersRepo.updateUser(id, user);
-};
-
-function deleteUser(id: number){
-    return usersRepo.deleteUser(id);
+async function deleteUser(id: string){
+  return await UsersRepo.findByIdAndDelete(id);;
 };
 
 export default {
-    getAllUsers,
-    getUserById,
-    handleLogin,
-    createUser,
-    updateUser,
-    deleteUser
-};*/
+  getAllUsers,
+  getUserById,
+  handleLogin,
+  createUser,
+  updateUser,
+  deleteUser
+};
