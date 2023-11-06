@@ -1,5 +1,32 @@
-import { CategoryRepo } from "../models/Category.js";
-import { Category } from "../types/categories.js";
+import mongoose, { ObjectId } from "mongoose"
+import CategoryRepo from "../models/Category.js"
+import { Category } from "../types/category.js"
+
+async function getAll() {
+  const categories = await CategoryRepo.find().exec()
+  return categories
+}
+
+async function getOne(categoryId: string) {
+  const id = new mongoose.Types.ObjectId(categoryId)
+  const category = await CategoryRepo.findById(id)
+  return category
+}
+
+async function createCategory(category: Category) {
+  const newCategory = new CategoryRepo(category)
+  return await newCategory.save()
+}
+
+export default {
+  getOne,
+  getAll,
+  createCategory
+}
+
+
+/*import { CategoryRepo } from "../models/Category.js";
+import { Category } from "../types/category.js";
 
 const categoriesRepo = new CategoryRepo();
 
@@ -40,4 +67,4 @@ export default {
   findIndex,
   updateCategory,
   deleteCategory,
-};
+};*/
