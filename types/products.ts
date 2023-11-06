@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Category } from "./categories.js";
+import { Category } from "./category.js";
 import { productSchema } from '../middlewares/productValidate.js'
 
 export type Product = {

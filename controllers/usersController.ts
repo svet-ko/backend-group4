@@ -33,8 +33,11 @@ export async function createUser(req: Request, res: Response) {
 export default {
   getAllUsers,
   getUserById,
+  //login,
   createUser,
-}
+  //updateUser,
+  //deleteUser
+};
 
 
 /*import { NextFunction, Request, Response } from "express";

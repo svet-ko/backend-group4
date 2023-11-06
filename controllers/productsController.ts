@@ -37,4 +37,6 @@ export default {
   findOneProduct,
   findAllProduct,
   createOneProduct,
+  //updateOneProduct,
+  //deleteOneProduct
 }
