@@ -1,4 +1,46 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express"
+
+import CategoriesService from "../services/productsService.js"
+import { ApiError } from "../errors/ApiError.js"
+import { ObjectId } from "mongoose"
+
+export async function getAllCategories(_: Request, res: Response) {
+  const products = await CategoriesService.findAll()
+
+  res.json({ products })
+}
+
+export async function getOneCategory(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const categoryId = req.params.categoryId
+  const category = await CategoriesService.findOne(categoryId)
+
+  if (!category) {
+    next(ApiError.resourceNotFound("Product not found."))
+    return
+  }
+
+  res.json({ category })
+}
+
+export async function createOne(req: Request, res: Response) {
+  const newCategory = req.body
+  const category = await CategoriesService.createOne(newCategory)
+
+  res.status(201).json({ category })
+}
+
+export default {
+  getOneCategory,
+  getAllCategories,
+  createOne,
+}
+
+
+/*import { NextFunction, Request, Response } from "express";
 import CategoriesService from "../services/categoriesService.js";
 import { ApiError } from "../errors/ApiError.js";
 
@@ -85,4 +127,4 @@ export function deleteCategory(
   }
 }
 
-export default getAllCategory;
+export default getAllCategory;*/

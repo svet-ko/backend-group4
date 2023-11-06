@@ -1,35 +1,31 @@
-// WILL CHANGE INTO SOMETHING LIKE THIS:
+import mongoose, { ObjectId } from "mongoose"
+import CategoryRepo from "../models/Category.js"
+import { Category } from "../types/category.js"
 
-/*import mongoose, { ObjectId } from "mongoose"
-import ProductRepo from "../models/Product.js"
-import { Product } from "../types/products.js"
-
-async function findAll() {
-  const products = await ProductRepo.find().exec()
-
-  return products
+async function getAll() {
+  const categories = await CategoryRepo.find().exec()
+  return categories
 }
 
-async function findOne(productId: string) {
-  const id = new mongoose.Types.ObjectId(productId)
-  const product = await ProductRepo.findById(id)
-
-  return product
+async function getOne(categoryId: number) {
+  const id = new mongoose.Types.ObjectId(categoryId.toString())
+  const category = await CategoryRepo.findById(id)
+  return category
 }
 
-async function createOne(product: Product) {
-  const newProduct = new ProductRepo(product)
-  return await newProduct.save()
+async function createOne(category: Category) {
+  const newCategory = new CategoryRepo(category)
+  return await newCategory.save()
 }
 
 export default {
-  findOne,
-  findAll,
-  createOne,
-}*/
+  getOne,
+  getAll,
+  createOne
+}
 
 
-import { CategoryRepo } from "../models/Category.js";
+/*import { CategoryRepo } from "../models/Category.js";
 import { Category } from "../types/category.js";
 
 const categoriesRepo = new CategoryRepo();
@@ -71,4 +67,4 @@ export default {
   findIndex,
   updateCategory,
   deleteCategory,
-};
+};*/
