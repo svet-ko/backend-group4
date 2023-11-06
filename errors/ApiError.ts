@@ -4,6 +4,10 @@ export class ApiError {
     this.message = message
   }
 
+  static unauthorized(msg: string) {
+    return new ApiError(401, msg)
+  }
+
   static resourceNotFound(msg: string) {
     return new ApiError(404, msg)
   }
@@ -16,7 +20,7 @@ export class ApiError {
     return new ApiError(400, msg)
   }
 
-  static interal(msg: string) {
+  static internal(msg: string) {
     return new ApiError(500, msg)
   }
 }

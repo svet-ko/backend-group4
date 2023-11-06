@@ -1,4 +1,20 @@
-import { LoginRequest, User } from "../types/user.js"
+import mongoose from "mongoose";
+
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
+
+const UserSchema = new Schema({
+  id: ObjectId,
+  name: String,
+  role: String,
+  email: String,
+  password: String,
+  avatar: String
+});
+
+export default mongoose.model("User", UserSchema);
+
+/*import { LoginRequest, User } from "../types/user.js"
 
 export class UsersRepo {
   users: User[] = [
@@ -69,4 +85,18 @@ export class UsersRepo {
     return user;
   }
 
-}
+
+------------------------
+
+import { z } from "zod"
+
+export const productSchema = z.object({
+  name: z.string({
+    required_error: "Name is required",
+  }),
+})
+
+export const requestSchema = z.object({
+  body: productSchema,
+})
+*/

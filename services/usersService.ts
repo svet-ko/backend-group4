@@ -1,13 +1,33 @@
-import { UsersRepo } from "../models/User.js";
+import mongoose, { ObjectId } from "mongoose"
+import UsersRepo from "../models/User.js"
+import { User, UserDTO } from "../types/user.js"
+
+async function getAllUsers() {
+  const users = await UsersRepo.find().exec()
+  return users
+}
+
+async function getUserById(userId: string) {
+  const id = new mongoose.Types.ObjectId(userId)
+  const user = await UsersRepo.findById(id)
+  return user
+}
+
+async function createUser(user: UserDTO) {
+  const newUser = new UsersRepo(user)
+  return await newUser.save()
+}
+
+export default {
+    getAllUsers,
+    getUserById,
+    createUser
+}
+
+/*import { UsersRepo } from "../models/User.js";
 import { LoginRequest, User, UserDTO } from "../types/user.js";
 import { generateId } from "../utils/generateId.js";
 
-const usersRepo = new UsersRepo();
-
-function getAllUsers(): User[] {
-  const users = usersRepo.getAllUsers();
-  return users;
-}
 
 function getUserById(userId: number): User | undefined {
   const user = usersRepo.getUserById(userId);
@@ -49,4 +69,4 @@ export default {
     createUser,
     updateUser,
     deleteUser
-};
+};*/
