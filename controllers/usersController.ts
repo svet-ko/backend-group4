@@ -5,9 +5,8 @@ import { ApiError } from "../errors/ApiError.js"
 import { ObjectId } from "mongoose"
 
 async function getAllUsers(_: Request, res: Response) {
-  const products = await UsersService.getAllUsers()
-
-  res.json({ products })
+  const users = await UsersService.getAllUsers()
+  res.json({ users })
 }
 
 async function getUserById(

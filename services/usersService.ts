@@ -24,7 +24,8 @@ async function handleLogin(loginRequest: LoginRequest) {
   return user;
 }
 
-async function updateUser(id: string, updatedUser: Partial<User>) {
+async function updateUser(userId: string, updatedUser: Partial<User>) {
+  const id = new mongoose.Types.ObjectId(userId)
   const result = await UsersRepo.updateOne({ _id: id }, { $set: updatedUser });
 
   if (!result) {
@@ -33,7 +34,8 @@ async function updateUser(id: string, updatedUser: Partial<User>) {
   return await UsersRepo.findById(id);
 }
 
-async function deleteUser(id: string){
+async function deleteUser(userId: string){
+  const id = new mongoose.Types.ObjectId(userId)
   return await UsersRepo.findByIdAndDelete(id);;
 };
 
