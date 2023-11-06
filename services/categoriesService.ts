@@ -7,13 +7,13 @@ async function getAll() {
   return categories
 }
 
-async function getOne(categoryId: number) {
-  const id = new mongoose.Types.ObjectId(categoryId.toString())
+async function getOne(categoryId: string) {
+  const id = new mongoose.Types.ObjectId(categoryId)
   const category = await CategoryRepo.findById(id)
   return category
 }
 
-async function createOne(category: Category) {
+async function createCategory(category: Category) {
   const newCategory = new CategoryRepo(category)
   return await newCategory.save()
 }
@@ -21,7 +21,7 @@ async function createOne(category: Category) {
 export default {
   getOne,
   getAll,
-  createOne
+  createCategory
 }
 
 

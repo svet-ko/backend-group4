@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from "express"
 
-import CategoriesService from "../services/productsService.js"
+import CategoriesService from "../services/categoriesService.js"
 import { ApiError } from "../errors/ApiError.js"
 import { ObjectId } from "mongoose"
 
 export async function getAllCategories(_: Request, res: Response) {
-  const products = await CategoriesService.findAll()
-
-  res.json({ products })
+  const categories = await CategoriesService.getAll()
+  res.json({ categories })
 }
 
 export async function getOneCategory(
@@ -16,27 +15,25 @@ export async function getOneCategory(
   next: NextFunction
 ) {
   const categoryId = req.params.categoryId
-  const category = await CategoriesService.findOne(categoryId)
+  const category = await CategoriesService.getOne(categoryId)
 
   if (!category) {
-    next(ApiError.resourceNotFound("Product not found."))
+    next(ApiError.resourceNotFound("Category not found."))
     return
   }
-
   res.json({ category })
 }
 
-export async function createOne(req: Request, res: Response) {
+export async function createCategory(req: Request, res: Response) {
   const newCategory = req.body
-  const category = await CategoriesService.createOne(newCategory)
-
+  const category = await CategoriesService.createCategory(newCategory)
   res.status(201).json({ category })
 }
 
 export default {
   getOneCategory,
   getAllCategories,
-  createOne,
+  createCategory,
 }
 
 
