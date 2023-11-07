@@ -7,11 +7,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { requestSchema } from "../schemas/productSchema.js";
+import { z } from "zod";
+export const productSchema = z.object({
+    body: z.object({
+        title: z.string({
+            required_error: "Title is required",
+        }),
+        price: z
+            .number({
+            required_error: "Price is required",
+        })
+            .positive(),
+        description: z.string({
+            required_error: "Description is required",
+        }),
+        categoryId: z.number({
+            required_error: "CategoryId is required",
+        }),
+        image: z.string().optional(),
+    })
+});
 export function validateProduct(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield requestSchema.parseAsync({
+            yield productSchema.parseAsync({
                 body: req.body,
                 query: req.query,
                 params: req.params,

@@ -5,6 +5,9 @@ export class ApiError {
         this.code = code;
         this.message = message;
     }
+    static unauthorized(msg) {
+        return new ApiError(401, msg);
+    }
     static resourceNotFound(msg) {
         return new ApiError(404, msg);
     }
@@ -14,7 +17,7 @@ export class ApiError {
     static badRequest(msg) {
         return new ApiError(400, msg);
     }
-    static interal(msg) {
+    static internal(msg) {
         return new ApiError(500, msg);
     }
 }
