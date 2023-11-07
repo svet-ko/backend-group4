@@ -6,7 +6,7 @@ import { ObjectId } from "mongoose"
 
 async function getAllUsers(_: Request, res: Response) {
   const users = await UsersService.getAllUsers()
-  res.json(users)
+  res.json({users})
 }
 
 async function getUserById(

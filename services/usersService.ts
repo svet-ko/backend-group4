@@ -1,6 +1,6 @@
 import mongoose, { ObjectId } from "mongoose"
 import UsersRepo from "../models/User.js"
-import { LoginRequest, User, UserDTO } from "../types/user.js"
+import { LoginRequest, User } from "../types/user.js"
 
 async function getAllUsers() {
   const users = await UsersRepo.find().exec()
@@ -13,7 +13,7 @@ async function getUserById(userId: string) {
   return user
 }
 
-async function createUser(user: UserDTO) {
+async function createUser(user: Partial<User>) {
   const newUser = new UsersRepo(user)
   return await newUser.save()
 }

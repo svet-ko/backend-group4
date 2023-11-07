@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
 
 const UserSchema = new Schema({
-  _id: ObjectId,
   name: String,
   role: String,
   email: String,
@@ -12,4 +10,5 @@ const UserSchema = new Schema({
   avatar: String
 });
 
-export default mongoose.model("users", UserSchema);
+export default mongoose.model("User", UserSchema, "users");
+

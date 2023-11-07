@@ -12,6 +12,6 @@ export const userDataSchema = z.object({
   })
 });
 
-export const userRequestSchema = z.object({
+/*export const userRequestSchema = z.object({
     body: userDataSchema,
-})
+})*/
