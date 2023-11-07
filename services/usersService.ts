@@ -1,31 +1,31 @@
-import mongoose, { ObjectId } from "mongoose"
+import mongoose from "mongoose"
 import UsersRepo from "../models/User.js"
 import { LoginRequest, User } from "../types/user.js"
 
 async function getAllUsers() {
-  const users = await UsersRepo.find().exec()
-  return users
+  const users = await UsersRepo.find().exec();
+  return users;
 }
 
 async function getUserById(userId: string) {
-  const id = new mongoose.Types.ObjectId(userId)
-  const user = await UsersRepo.findById(id)
-  return user
+  const id = new mongoose.Types.ObjectId(userId);
+  const user = await UsersRepo.findById(id);
+  return user;
 }
 
 async function createUser(user: Partial<User>) {
-  const newUser = new UsersRepo(user)
-  return await newUser.save()
+  const newUser = new UsersRepo(user);
+  return await newUser.save();
 }
 
 async function handleLogin(loginRequest: LoginRequest) {
-  const { email, password } = loginRequest.body
+  const { email, password } = loginRequest;
   const user = await UsersRepo.findOne({ email, password});
   return user;
 }
 
 async function updateUser(userId: string, updatedUser: Partial<User>) {
-  const id = new mongoose.Types.ObjectId(userId)
+  const id = new mongoose.Types.ObjectId(userId);
   const result = await UsersRepo.updateOne({ _id: id }, { $set: updatedUser });
 
   if (!result) {
@@ -35,9 +35,9 @@ async function updateUser(userId: string, updatedUser: Partial<User>) {
 }
 
 async function deleteUser(userId: string){
-  const id = new mongoose.Types.ObjectId(userId)
-  return await UsersRepo.findByIdAndDelete(id);;
-};
+  const id = new mongoose.Types.ObjectId(userId);
+  return await UsersRepo.findByIdAndDelete(id);
+}
 
 export default {
   getAllUsers,
@@ -46,4 +46,4 @@ export default {
   createUser,
   updateUser,
   deleteUser
-};
+}
