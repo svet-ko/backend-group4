@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const UserSchema = new Schema({
-  id: ObjectId,
+  _id: ObjectId,
   name: String,
   role: String,
   email: String,
@@ -12,4 +12,4 @@ const UserSchema = new Schema({
   avatar: String
 });
 
-export default mongoose.model("User", UserSchema);
+export default mongoose.model("users", UserSchema);
