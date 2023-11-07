@@ -1,9 +1,3 @@
-/*export type Category = {
-  id: number;
-  name: string;
-  description: string;
-};*/
-
 import { z } from "zod";
 import { categorySchema } from "../schemas/categorySchema.js";
 
