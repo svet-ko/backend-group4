@@ -11,7 +11,3 @@ export const userDataSchema = z.object({
     message: "Avatar must be a valid URL if provided",
   })
 });
-
-export const userRequestSchema = z.object({
-    body: userDataSchema,
-})

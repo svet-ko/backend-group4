@@ -1,14 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { z } from "zod";
-
-export const loginRequestSchema = z.object({
-    email: z.string({
-        required_error: "Email is required",
-    }),
-    password: z.string({
-        required_error: "Password is required",
-    }),
-});
+import { loginRequestSchema } from "../schemas/loginRequestSchema.js";
 
 export async function validateLoginRequest(
     req: Request,
