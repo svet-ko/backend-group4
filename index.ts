@@ -22,7 +22,7 @@ const mongoURL = process.env.DB_URL as string;
 mongoose.connect(mongoURL).then(() => console.log("Connected!"));
 
 app.get("/hello", loggingMiddleware, (_, res) => {
-  res.json({ msg: "hello, from Express.js!" })
+  res.json({ msg: "hello, from Express.js!" });
 });
 
 app.use(loggingMiddleware);
@@ -38,5 +38,5 @@ app.use(apiErrorHandler);
 app.use(routeNotFound);
 
 app.listen(PORT, () => {
-  console.log(`👀 app is running at localhost:${PORT}`)
+  console.log(`👀 app is running at localhost:${PORT}`);
 });
