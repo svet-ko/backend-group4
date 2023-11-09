@@ -33,10 +33,54 @@ export async function createOneProduct(req: Request, res: Response) {
   res.status(201).json({ product })
 }
 
+export async function deleteOneProduct(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const productId = req.params.productId;
+  const product = await ProductsService.deleteOne(productId);
+
+  if (!product) {
+    next(ApiError.resourceNotFound("Product not found"));
+    return;
+  }
+
+  res.json({ product });
+}
+
+export async function updateOneProduct(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const productId = req.params.productId;
+  const updatesForProduct = req.body;
+  const productToUpdate = await ProductsService.findOne(productId);
+  console.log(productToUpdate);
+
+  if (!productToUpdate) {
+    next(ApiError.resourceNotFound("Product not found"));
+    return;
+  }
+
+  const updatedProduct = await ProductsService.updateOne(
+    productId,
+    updatesForProduct
+  );
+
+  if (!updatedProduct) {
+    next(ApiError.internal("Could not update product"));
+    return;
+  }
+
+  res.json({ updatedProduct });
+}
+
 export default {
   findOneProduct,
   findAllProduct,
   createOneProduct,
-  //updateOneProduct,
-  //deleteOneProduct
+  updateOneProduct,
+  deleteOneProduct
 }
