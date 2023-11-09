@@ -21,7 +21,18 @@ async function getOrderByUserId(
     res.json({ order });
 }
 
+async function createOrder(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    const userId = req.params.userId;
+    const newOrder = await OrdersService.createOrder(userId);
+    res.status(201).json({ newOrder });
+}
+
 export default {
     getAllOrders,
-    getOrderByUserId
+    getOrderByUserId,
+    createOrder
 }
