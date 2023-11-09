@@ -1,10 +1,12 @@
 import mongoose, { ObjectId } from "mongoose"
+
 import ProductRepo from "../models/Product.js"
-import { Product } from "../types/products.js"
+import { Product, ProductToCreate } from "../types/products.js"
+import CategoryRepo from "../models/Category.js";
+import { Category } from "../types/category.js";
 
 async function findAll() {
   const products = await ProductRepo.find().exec()
-  console.log('products: ', products)
   return products
 }
 
@@ -15,13 +17,32 @@ async function findOne(productId: string) {
   return product
 }
 
-async function createOne(product: Product) {
-  const newProduct = new ProductRepo(product)
-  return await newProduct.save()
+async function createOne(product: ProductToCreate) {
+  const category: Category | null = await CategoryRepo.findOne({
+    _id: product.categoryId
+  })
+  if (category) {
+    delete product.categoryId;
+    product.category = category;
+    const newProduct = new ProductRepo(product);
+    console.log(newProduct);
+    return await newProduct.save()
+  }
+  return false;
 }
 
-async function updateOne(productId: string, updatesForProduct: Partial<Product>) {
+async function updateOne(productId: string, updatesForProduct: Partial<ProductToCreate>) {
   const id = new mongoose.Types.ObjectId(productId);
+
+  const category: Category | null = await CategoryRepo.findOne({
+    _id: updatesForProduct.categoryId
+  })
+
+  if (category) {
+    delete updatesForProduct.categoryId;
+    updatesForProduct.category = category;
+  }
+
   const result = await ProductRepo.updateOne({ _id: id }, { $set: updatesForProduct });
 
   if (!result) {
