@@ -55,8 +55,8 @@ async function updateUser(
       next(ApiError.resourceNotFound("User not found"));
       return;
     }
-    const result = await UsersService.updateUser(id, userData);
-    res.status(200).json({ result });
+    const updatedUser = await UsersService.updateUser(id, userData);
+    res.status(200).json({ updatedUser });
 }
 
 async function deleteUser(
@@ -71,7 +71,7 @@ async function deleteUser(
       return;
     }
     UsersService.deleteUser(id);
-    res.status(200).json({user});
+    res.status(204).json({user});
 }
 
 export default {
