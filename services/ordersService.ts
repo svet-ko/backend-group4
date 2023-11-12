@@ -13,8 +13,8 @@ async function getOrderByUserId(userId: string) {
     return order;
 }
 
-async function createOrder(userId: string) {
-    const newOrder = new OrdersRepo(userId);
+async function createOrder(userId: string, totalAmount: number) {
+    const newOrder = new OrdersRepo(userId, totalAmount);
     return await newOrder.save();
 }
 
