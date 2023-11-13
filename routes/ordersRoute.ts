@@ -6,7 +6,7 @@ const router = express.Router();
 // TO DO: auth middleware to authorize get all access
 router.get("/", OrdersController.getAllOrders);
 router.get("/:userId", OrdersController.getOrderByUserId);
-router.post("/checkout", OrdersController.createOrder);
-
+router.post("/checkout/:userId", OrdersController.createOrder);
+router.delete("/:orderId", OrdersController.deleteOrder);
 
 export default router;
