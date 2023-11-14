@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import OrdersService from "../services/ordersService.js"
+import ItemsService from "../services/itemsService.js"
 import ProductsService from "../services/productsService.js";
 import { ApiError } from "../errors/ApiError.js"
 import Item from "../models/Item.js";
@@ -62,7 +63,8 @@ async function deleteOrder(
       next(ApiError.resourceNotFound("Order that you are trying to delete does not exist")); 
       return;
     }
-    OrdersService.deleteOrder(id);
+    await OrdersService.deleteOrder(id);
+    await ItemsService.deleteItemsByOrderId(id);
     res.status(201).json({message: "Order deleted"});
 }
 
@@ -71,7 +73,8 @@ async function deleteAllOrders(
     res: Response, 
     next: NextFunction
 ) {
-    OrdersService.deleteAllOrders();
+    await OrdersService.deleteAllOrders();
+    await ItemsService.deleteAllItems();
     res.status(201).json({ message: 'All orders deleted successfully' });
 }
 
@@ -81,6 +84,7 @@ async function deleteAllOrdersByUserId(
     next: NextFunction
 ) {
     const userId = req.params.userId;
+    const orders = await OrdersService.getOrdersByUserId(userId);
     await OrdersService.deleteAllOrdersByUserId(userId);
     res.status(201).json({ message: 'Orders deleted successfully' });
 }
