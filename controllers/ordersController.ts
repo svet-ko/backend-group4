@@ -10,18 +10,18 @@ async function getAllOrders(_: Request, res: Response) {
   res.json({ orders });
 }
 
-async function getOrderByUserId(
+async function getOrdersByUserId(
     req: Request,
     res: Response,
     next: NextFunction
   ) {
     const userId = req.params.userId;
-    const order = await OrdersService.getOrderByUserId(userId);
-    if (!order) {
+    const orders = await OrdersService.getOrdersByUserId(userId);
+    if (!orders) {
       next(ApiError.resourceNotFound("This user has no orders"));
       return;
     }
-    res.json({ order });
+    res.json({ orders });
 }
 
 async function createOrder(
@@ -42,7 +42,7 @@ async function createOrder(
         arr.map((item) => {
             const orderItem = new Item({
                 orderId,
-                productId: item.productId,
+                productId: item.id,
                 quantity: item.quantity,
             });
             orderItem.save();
@@ -67,7 +67,7 @@ async function deleteOrder(
 }
 
 async function deleteAllOrders(
-    req: Request, 
+    _: Request, 
     res: Response, 
     next: NextFunction
 ) {
@@ -75,10 +75,21 @@ async function deleteAllOrders(
     res.status(201).json({ message: 'All orders deleted successfully' });
 }
 
+async function deleteAllOrdersByUserId(
+    req: Request, 
+    res: Response, 
+    next: NextFunction
+) {
+    const userId = req.params.userId;
+    await OrdersService.deleteAllOrdersByUserId(userId);
+    res.status(201).json({ message: 'Orders deleted successfully' });
+}
+
 export default {
     getAllOrders,
-    getOrderByUserId,
+    getOrdersByUserId,
     createOrder,
     deleteOrder,
-    deleteAllOrders // should be protected for highest level
+    deleteAllOrders, // should be protected for highest level
+    deleteAllOrdersByUserId
 }

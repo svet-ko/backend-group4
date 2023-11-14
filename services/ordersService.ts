@@ -1,16 +1,15 @@
 import mongoose from "mongoose"
 import OrdersRepo from "../models/Order.js"
-import ProductsService from "./productsService.js";
 
-// only for admin role
+// admin protected
 async function getAllOrders() {
   const orders = await OrdersRepo.find().exec();
   return orders;
 }
 
-async function getOrderByUserId(userId: string) {
+async function getOrdersByUserId(userId: string) {
     const id = new mongoose.Types.ObjectId(userId);
-    const order = await OrdersRepo.findOne({ userId: id}); 
+    const order = await OrdersRepo.find({ userId: id}); 
     return order;
 }
 
@@ -35,11 +34,17 @@ async function deleteAllOrders() {
     return await OrdersRepo.deleteMany({});
 }
 
+async function deleteAllOrdersByUserId(userId: string) {
+    const id = new mongoose.Types.ObjectId(userId);
+    return await OrdersRepo.deleteMany({ "userId": userId })
+}
+
 export default {
     getAllOrders,
-    getOrderByUserId,
+    getOrdersByUserId,
     getOrderById,
     createOrder,
     deleteOrder,
-    deleteAllOrders
+    deleteAllOrders,
+    deleteAllOrdersByUserId
 }
