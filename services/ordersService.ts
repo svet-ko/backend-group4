@@ -36,7 +36,7 @@ async function deleteAllOrders() {
 
 async function deleteAllOrdersByUserId(userId: string) {
     const id = new mongoose.Types.ObjectId(userId);
-    return await OrdersRepo.deleteMany({ "userId": userId })
+    return await OrdersRepo.deleteMany({ "userId": id })
 }
 
 export default {
