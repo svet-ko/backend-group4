@@ -4,7 +4,7 @@ import ProductRepo from "../models/Product.js";
 import { Product, ProductToCreate } from "../types/products.js";
 import CategoryRepo from "../models/Category.js";
 import { Category } from "../types/category.js";
-import { ItemRequest } from "../types/itemRequest.js";
+import { OrderRequest } from "../types/orderRequest.js";
 
 async function findAll() {
   const products = await ProductRepo.find().populate("category").exec();
@@ -63,10 +63,11 @@ async function updateOne(
 }
 
 async function getTotalPrice(
-  orderItems: ItemRequest[]
+  orderItems: OrderRequest[]
 ): Promise<number>{
   const inputIds = orderItems.map((item) => item.productId);
-  const products = await ProductRepo.find({ _id: inputIds });
+  //const products = await ProductRepo.find({ _id: { $in: inputIds } });
+  const products = await ProductRepo.find();
   const sum = products.reduce((acc, product) => {
     const inputTargetItem = orderItems.find((item) =>
       product._id.equals(item.productId)

@@ -28,7 +28,7 @@ async function createUser(req: Request, res: Response) {
   const user = await UsersService.createUser(newUser);
   res.status(201).json({ user });
 }
-
+//const key = crypto.randomBytes(64).toString("hex"); //put token as TOKEN_SECRET in .env
 async function login(
   req: Request,
   res: Response,
@@ -41,6 +41,13 @@ async function login(
     return;
   }
   res.status(200).json({ user });
+  //-------------
+  /*const payload = {
+    userId: user.id,
+    email: user.email
+  }
+  const token = jwt.sign(payload, process.env.TOKEN_SECRET as string)
+  res.json({token}) // to test token use jwt.io*/
 }
 
 async function updateUser(
@@ -82,4 +89,26 @@ export default {
   updateUser,
   deleteUser
 }
+
+/*
+protected route principle example
+app.get("/protected", (req, res) =>{
+  //- before moving forward, check token
+  // in get request in Authorization in postman, choose from dropdown bearer token - paste token
+  // 
+  const token = req.headers.authorization.split(" ")[1] //splitting token from the word Bearer
+  try {
+    // this is token vaidation
+    const decoded = jwt.verify(token, process.env.TOEKN_STRING as string)
+    console.log(decoded) // if decoded comes it means its valid
+    next(null, userId) // we sending iether userId or the whole decoded user
+    // usually next steps are checking user roles/permissions
+    res.json({ some content ...})
+  } catch (err){
+    console.log(err)
+    res.status(403).json({ message: "invalid token"})
+  }
+}
+// this validation will move to middleware 
+*/
 

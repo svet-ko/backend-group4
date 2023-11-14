@@ -3,7 +3,7 @@ import OrdersService from "../services/ordersService.js"
 import ProductsService from "../services/productsService.js";
 import { ApiError } from "../errors/ApiError.js"
 import Item from "../models/Item.js";
-import { ItemRequest } from "../types/itemRequest.js";
+import { OrderRequest } from "../types/orderRequest.js";
 
 async function getAllOrders(_: Request, res: Response) {
   const orders = await OrdersService.getAllOrders();
@@ -30,25 +30,24 @@ async function createOrder(
     next: NextFunction
 ) {
     const userId: string = req.params.userId;
-    const arr: ItemRequest[] = req.body; 
+    const arr: OrderRequest[] = req.body; 
     const totalPrice: number = await ProductsService.getTotalPrice(arr);
     const newOrder = await OrdersService.createOrder(userId, totalPrice);
     if (!newOrder) {
         next(ApiError.resourceNotFound("Order could not be created"));
         return;
-      }
+    }
     const orderId = newOrder._id
     await Promise.all(
         arr.map((item) => {
-          const orderItem = new Item({
-            orderId,
-            productId: item.productId,
-            quantity: item.quantity,
-          })
-          orderItem.save()
+            const orderItem = new Item({
+                orderId,
+                productId: item.productId,
+                quantity: item.quantity,
+            });
+            orderItem.save();
         })
-      )
-    
+    );  
     res.status(201).json({ newOrder });
 }
 
@@ -64,12 +63,22 @@ async function deleteOrder(
       return;
     }
     OrdersService.deleteOrder(id);
-    res.status(201).json({msg: "Order deleted"});
+    res.status(201).json({message: "Order deleted"});
+}
+
+async function deleteAllOrders(
+    req: Request, 
+    res: Response, 
+    next: NextFunction
+) {
+    OrdersService.deleteAllOrders();
+    res.status(201).json({ message: 'All orders deleted successfully' });
 }
 
 export default {
     getAllOrders,
     getOrderByUserId,
     createOrder,
-    deleteOrder
+    deleteOrder,
+    deleteAllOrders // should be protected for highest level
 }

@@ -31,10 +31,15 @@ async function deleteOrder(orderId: string) {
     return await OrdersRepo.findByIdAndDelete(id);
 }
 
+async function deleteAllOrders() {
+    return await OrdersRepo.deleteMany({});
+}
+
 export default {
     getAllOrders,
     getOrderByUserId,
     getOrderById,
     createOrder,
-    deleteOrder
+    deleteOrder,
+    deleteAllOrders
 }

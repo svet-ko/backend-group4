@@ -8,5 +8,6 @@ router.get("/", OrdersController.getAllOrders);
 router.get("/:userId", OrdersController.getOrderByUserId);
 router.post("/checkout/:userId", OrdersController.createOrder);
 router.delete("/:orderId", OrdersController.deleteOrder);
+//router.delete("/delete", OrdersController.deleteAllOrders);
 
 export default router;
