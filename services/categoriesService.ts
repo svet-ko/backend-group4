@@ -39,6 +39,7 @@ export async function deleteCategory(categoryId: string) {
   return await CategoryRepo.findByIdAndDelete(categoryId);
 }
 
+
 export default {
   getOne,
   getAll,

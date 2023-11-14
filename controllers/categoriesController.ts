@@ -23,10 +23,25 @@ export async function getOneCategory(
   res.json({ category });
 }
 
-export async function createCategory(req: Request, res: Response) {
-  const newCategory = req.body;
-  const category = await CategoriesService.createCategory(newCategory);
-  res.status(201).json({ category });
+export async function createCategory(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const newCategory = req.body;
+    const category = await CategoriesService.createCategory(newCategory);
+    res.status(201).json({ category });
+  } catch (error: any) {
+    if (error.name === "ValidationError") {
+      const validationError = {};
+      for (const field in error.errors) {
+        validationError[field] = error.errors[field].message;
+      }
+      res.status(500).json({ error: validationError });
+    }
+    res.status(500).json({ msg: "something went wrong" });
+  }
 }
 
 export async function updateCategory(
