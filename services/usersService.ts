@@ -21,6 +21,21 @@ async function createUser(user: Partial<User>) {
 async function handleLogin(loginRequest: LoginRequest) {
   const { email, password } = loginRequest;
   const user = await UsersRepo.findOne({ email, password});
+  /**
+   * in schema make fields required!!
+   const password , email from req.body
+   const user = await Userrepo.findOne({email})
+   if (!user) {
+    return res.json({message: ...})
+   }
+   const hashedPsw = user.password
+   const isValid = bcrypt.compareSync(password, hashedPsw)
+   if (!isValid) {
+    return res.json({message: ...})
+   }
+   login returns token that we create after checking isValid
+   *
+   //we need to build middleware for authorization, where we extract the information thru token to make use of the role
   return user;
 }
 

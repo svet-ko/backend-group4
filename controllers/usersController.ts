@@ -25,8 +25,15 @@ async function getUserById(
 
 async function createUser(req: Request, res: Response) {
   const newUser = req.body;
+  /**
+   const hashedpsw = bcrypt.hash(newUser.psw, 10)
+   // this 10 is called SALT
+   */
   const user = await UsersService.createUser(newUser);
   res.status(201).json({ user });
+  // in signup return msg user created insead of user
+  //install bcryot.js packg
+  //use role as default value in schema and not pass when creating
 }
 async function login(
   req: Request,
@@ -40,6 +47,10 @@ async function login(
     return;
   }
   res.status(200).json({ user });
+  /**
+    in user service we need to find if exsists
+    
+   */
 }
 
 async function updateUser(
