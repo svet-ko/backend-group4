@@ -3,6 +3,14 @@ import { NextFunction, Request, Response } from "express";
 import CategoriesService from "../services/categoriesService.js";
 import { ApiError } from "../errors/ApiError.js";
 
+interface ValidationError {
+  errors: {
+    [field: string]: {
+      message: string;
+    };
+  };
+}
+
 export async function getAllCategories(_: Request, res: Response) {
   const categories = await CategoriesService.getAll();
   res.json({ categories });
@@ -33,13 +41,6 @@ export async function createCategory(
     const category = await CategoriesService.createCategory(newCategory);
     res.status(201).json({ category });
   } catch (error: any) {
-    if (error.name === "ValidationError") {
-      const validationError = {};
-      for (const field in error.errors) {
-        validationError[field] = error.errors[field].message;
-      }
-      res.status(500).json({ error: validationError });
-    }
     res.status(500).json({ msg: "something went wrong" });
   }
 }
