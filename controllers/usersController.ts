@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from "express"
 import crypto from "crypto"
 import bcrypt from "bcryptjs"
+import UsersRepo from "../models/User.js"
 import UsersService from "../services/usersService.js"
 import { ApiError } from "../errors/ApiError.js"
-import { LoginRequest } from "../types/user.js"
+import { LoginRequest } from "../types/auth.js"
+import { User} from "../types/user.js"
 
 async function getAllUsers(_: Request, res: Response) {
   const users = await UsersService.getAllUsers();
@@ -24,16 +26,18 @@ async function getUserById(
   res.json({ user });
 }
 
-async function createUser(req: Request, res: Response) {//req type will change here
+async function createUser(req: Request, res: Response, next: NextFunction) {
   const newUser = req.body;
-  const hashedPsw = bcrypt.hash(newUser.password, 10)
+  const hashedPsw = await bcrypt.hash(newUser.password, 10);
   const user = await UsersService.createUser({password: hashedPsw, ...newUser});
   if (!user) {
-    //error handling
+    next(ApiError.internal("User could not be created"));
+    return;
   }
-  const payload = {
+  const payload: Partial<User> = {
     email: user.email,
-    password: hashedPsw.toString()
+    id: user._id.toString(),
+    role: "customer"
   }
   const token = await UsersService.getToken(payload);
   res.status(201).json({ token })
@@ -46,20 +50,17 @@ async function login(
   next: NextFunction
 ) {
   const loginRequest: LoginRequest = req.body;
-  const hashedPsw = loginRequest.password;
-
-  /*
-  const user = await UsersRepo.findOne({ email });
-  
+  const hashedPsw = await bcrypt.hash(loginRequest.password, 10);
+  console.log("HASHED: ", hashedPsw);
+  const password = hashedPsw.toString();
+  const user = await UsersRepo.findOne({ email: loginRequest.email });
   if (!user) {
-    return "error"
+    return res.json({message: "Not in the system, please signup first"});
   }
-  
-  const isValid = bcrypt.compareSync(password, hashedPsw)
-   if (!isValid) {
-    //return res.json({message: ...})
-   }
-   */
+  const isValid = bcrypt.compareSync(user.password, password);
+  if (!isValid) {
+    return res.json({message: "Invalid password"});
+  }
   const token = await UsersService.getToken(loginRequest);
   if (!token) {
     next(ApiError.unauthorized("Incorrect email or password"));

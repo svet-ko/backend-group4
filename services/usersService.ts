@@ -1,7 +1,8 @@
 import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
 import UsersRepo from "../models/User.js"
-import { LoginRequest, User } from "../types/user.js"
+import { LoginRequest } from "../types/auth.js"
+import { User, UserDTO } from "../types/user.js"
 
 async function getAllUsers() {
   const users = await UsersRepo.find().exec();
@@ -19,10 +20,9 @@ async function createUser(user: Partial<User>) {
   return await newUser.save();
 }
 
-async function getToken(payload: LoginRequest) {
+async function getToken(payload: Partial<User>) {
   const token = jwt.sign(payload, process.env.TOKEN_SECRET as string)
   return token;
-   //we need to build middleware for authorization, where we extract the information thru token to make use of the role
 }
 
 async function updateUser(userId: string, updatedUser: Partial<User>) {

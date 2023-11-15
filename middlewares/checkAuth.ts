@@ -1,24 +1,24 @@
-import { NextFunction } from "express"
 import jwt from "jsonwebtoken"
-import { WithAuthRequest } from "../types/user.js"
+import { NextFunction, Request, Response } from "express"
 import { ApiError } from "../errors/ApiError.js"
+import { DecodedUser } from "../types/auth.js"
 
-export async function checkAuth(
-    req: WithAuthRequest | Request, 
-    res: Response, 
-    next: NextFunction
+export function checkAuth(
+  req: Request,
+  _: Response,
+  next: NextFunction
 ) {
-    const token = req.headers.authorization.split(" ")[1] 
-    if (!token) {
-        next(ApiError.forbidden('Token is missing'));
-        return;
-    }
+  const token = req.headers.authorization?.split(" ")[1];
+  console.log("TOKEN: ", token);
+  if (!token) {
+    next(ApiError.forbidden("Token is missing"));
+  } else {
     try {
-        const decoded = jwt.verify(token, process.env.TOEKN_STRING as string)
-        console.log('decoded :', decoded)
-        //req.decoded = decoded
-        next()
-      } catch (err) {
-        next(ApiError.forbidden('Authentication failed'));
-      }
+      const decodedUser = jwt.verify(token, process.env.TOKEN_SECRET as string) as DecodedUser;
+      console.log("DECODED USER: ", decodedUser);
+      next();
+    } catch (err) {
+      next(ApiError.forbidden("Invalid token"));
+    }
+  }
 }
