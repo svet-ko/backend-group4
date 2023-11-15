@@ -85,7 +85,9 @@ async function deleteAllOrdersByUserId(
 ) {
     const userId = req.params.userId;
     const orders = await OrdersService.getOrdersByUserId(userId);
+    const ids = orders.map(order => order._id)
     await OrdersService.deleteAllOrdersByUserId(userId);
+    await ItemsService.deleteItemsFromMultipleOrders(ids);
     res.status(201).json({ message: 'Orders deleted successfully' });
 }
 

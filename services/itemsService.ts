@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { Types } from "mongoose"
 import ItemsRepo from "../models/Item.js"
 
 
@@ -7,9 +7,8 @@ async function deleteItemsByOrderId(orderId: string) {
     return await ItemsRepo.deleteMany({ "orderId": id })
 }
 
-async function deleteItemsFromMultipleOrders(orderIds: string[]){
-    const ids = orderIds.map(id => new mongoose.Types.ObjectId(id));
-    return await ItemsRepo.deleteMany({ "orderId": { $in: ids } });
+async function deleteItemsFromMultipleOrders(orderIds: Types.ObjectId[]){
+    return await ItemsRepo.deleteMany({ "orderId": { $in: orderIds } });
 }
 
 async function deleteAllItems() {
