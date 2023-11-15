@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { userDataSchema } from "../schemas/userSchema.js";
 
-export async function validateUser(
+export async function validateNewUserRequest(
   req: Request,
   res: Response,
   next: NextFunction

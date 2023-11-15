@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import jwt from "jsonwebtoken"
 import UsersRepo from "../models/User.js"
 import { LoginRequest, User } from "../types/user.js"
 
@@ -18,25 +19,10 @@ async function createUser(user: Partial<User>) {
   return await newUser.save();
 }
 
-async function handleLogin(loginRequest: LoginRequest) {
-  const { email, password } = loginRequest;
-  const user = await UsersRepo.findOne({ email, password});
-  /**
-   * in schema make fields required!!
-   const password , email from req.body
-   const user = await Userrepo.findOne({email})
-   if (!user) {
-    return res.json({message: ...})
-   }
-   const hashedPsw = user.password
-   const isValid = bcrypt.compareSync(password, hashedPsw)
-   if (!isValid) {
-    return res.json({message: ...})
-   }
-   login returns token that we create after checking isValid
-   *
+async function getToken(payload: LoginRequest) {
+  const token = jwt.sign(payload, process.env.TOKEN_SECRET as string)
+  return token;
    //we need to build middleware for authorization, where we extract the information thru token to make use of the role
-  return user;
 }
 
 async function updateUser(userId: string, updatedUser: Partial<User>) {
@@ -57,7 +43,7 @@ async function deleteUser(userId: string){
 export default {
   getAllUsers,
   getUserById,
-  handleLogin,
+  getToken,
   createUser,
   updateUser,
   deleteUser

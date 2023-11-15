@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express"
-
+import crypto from "crypto"
+import bcrypt from "bcryptjs"
 import UsersService from "../services/usersService.js"
 import { ApiError } from "../errors/ApiError.js"
 import { LoginRequest } from "../types/user.js"
@@ -23,17 +24,21 @@ async function getUserById(
   res.json({ user });
 }
 
-async function createUser(req: Request, res: Response) {
+async function createUser(req: Request, res: Response) {//req type will change here
   const newUser = req.body;
-  /**
-   const hashedpsw = bcrypt.hash(newUser.psw, 10)
-   // this 10 is called SALT
-   */
-  const user = await UsersService.createUser(newUser);
-  res.status(201).json({ user });
+  const hashedPsw = bcrypt.hash(newUser.password, 10)
+  const user = await UsersService.createUser({password: hashedPsw, ...newUser});
+  if (!user) {
+    //error handling
+  }
+  const payload = {
+    email: user.email,
+    password: hashedPsw.toString()
+  }
+  const token = await UsersService.getToken(payload);
+  res.status(201).json({ token })
   // in signup return msg user created insead of user
-  //install bcryot.js packg
-  //use role as default value in schema and not pass when creating
+
 }
 async function login(
   req: Request,
@@ -41,16 +46,26 @@ async function login(
   next: NextFunction
 ) {
   const loginRequest: LoginRequest = req.body;
-  const user = await UsersService.handleLogin(loginRequest);
+  const hashedPsw = loginRequest.password;
+
+  /*
+  const user = await UsersRepo.findOne({ email });
+  
   if (!user) {
+    return "error"
+  }
+  
+  const isValid = bcrypt.compareSync(password, hashedPsw)
+   if (!isValid) {
+    //return res.json({message: ...})
+   }
+   */
+  const token = await UsersService.getToken(loginRequest);
+  if (!token) {
     next(ApiError.unauthorized("Incorrect email or password"));
     return;
   }
-  res.status(200).json({ user });
-  /**
-    in user service we need to find if exsists
-    
-   */
+  res.status(200).json({ token });
 }
 
 async function updateUser(
