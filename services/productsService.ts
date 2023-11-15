@@ -4,6 +4,7 @@ import ProductRepo from "../models/Product.js";
 import { Product, ProductToCreate } from "../types/products.js";
 import CategoryRepo from "../models/Category.js";
 import { Category } from "../types/category.js";
+import { OrderRequest } from "../types/orderRequest.js";
 
 async function findAll() {
   const products = await ProductRepo.find().populate("category").exec();
@@ -62,16 +63,13 @@ async function updateOne(
 }
 
 async function getTotalPrice(
-  orderItemsInput: {
-    _id: mongoose.Types.ObjectId;
-    quantity: number;
-  }[]
-): Promise<number> {
-  const inputIds = orderItemsInput.map((item) => item._id);
-  const products = await ProductRepo.find({ _id: inputIds });
+  orderItems: OrderRequest[]
+): Promise<number>{
+  const inputIds = orderItems.map((item) => item.id);
+  const products = await ProductRepo.find({_id: inputIds});
   const sum = products.reduce((acc, product) => {
-    const inputTargetItem = orderItemsInput.find((item) =>
-      product._id.equals(item._id)
+    const inputTargetItem = orderItems.find((item) =>
+      product._id.equals(item.id)
     );
     if (product.price) {
       return !!inputTargetItem
@@ -80,7 +78,7 @@ async function getTotalPrice(
     }
     return acc;
   }, 0);
-  return sum;
+  return sum; 
 }
 
 async function deleteOne(productId: string) {
