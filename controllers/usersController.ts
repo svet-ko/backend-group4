@@ -28,7 +28,6 @@ async function createUser(req: Request, res: Response) {
   const user = await UsersService.createUser(newUser);
   res.status(201).json({ user });
 }
-
 async function login(
   req: Request,
   res: Response,
