@@ -6,6 +6,11 @@ async function getAllItems(){
     return items;
 }
 
+async function getItem(productId: string, orderId: string) {
+    const item = await ItemsRepo.findOne()
+    return item;
+}
+
 async function deleteItemsByOrderId(orderId: string) {
     const id = new mongoose.Types.ObjectId(orderId);
     return await ItemsRepo.deleteMany({ "orderId": id })
@@ -21,6 +26,7 @@ async function deleteAllItems() {
 
 export default {
     getAllItems,
+    getItem,
     deleteItemsByOrderId,
     deleteAllItems,
     deleteItemsFromMultipleOrders
