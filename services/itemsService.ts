@@ -1,6 +1,10 @@
 import mongoose, { Types } from "mongoose"
 import ItemsRepo from "../models/Item.js"
 
+async function getAllItems(){
+    const items = await ItemsRepo.find().exec();
+    return items;
+}
 
 async function deleteItemsByOrderId(orderId: string) {
     const id = new mongoose.Types.ObjectId(orderId);
@@ -16,6 +20,7 @@ async function deleteAllItems() {
 }
 
 export default {
+    getAllItems,
     deleteItemsByOrderId,
     deleteAllItems,
     deleteItemsFromMultipleOrders

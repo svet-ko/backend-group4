@@ -1,6 +1,9 @@
 import mongoose from "mongoose"
+import jwt from "jsonwebtoken"
+import bcrypt from "bcryptjs"
 import UsersRepo from "../models/User.js"
-import { LoginRequest, User } from "../types/user.js"
+import { TokenPayload } from "../types/auth.js"
+import { User } from "../types/user.js"
 
 async function getAllUsers() {
   const users = await UsersRepo.find().exec();
@@ -13,15 +16,17 @@ async function getUserById(userId: string) {
   return user;
 }
 
-async function createUser(user: Partial<User>) {
+async function createUser(user: User) {
+  const hashedPsw = await bcrypt.hash(user.password, 10);
   const newUser = new UsersRepo(user);
+  newUser.password = hashedPsw;
+
   return await newUser.save();
 }
 
-async function handleLogin(loginRequest: LoginRequest) {
-  const { email, password } = loginRequest;
-  const user = await UsersRepo.findOne({ email, password});
-  return user;
+async function getToken(payload: TokenPayload) {
+  const token = jwt.sign(payload, process.env.TOKEN_SECRET as string)
+  return token;
 }
 
 async function updateUser(userId: string, updatedUser: Partial<User>) {
@@ -42,7 +47,7 @@ async function deleteUser(userId: string){
 export default {
   getAllUsers,
   getUserById,
-  handleLogin,
+  getToken,
   createUser,
   updateUser,
   deleteUser
