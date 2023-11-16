@@ -4,7 +4,6 @@ const Schema = mongoose.Schema
 const ObjectId = Schema.ObjectId
 
 const ProductSchema = new Schema({
-  id: ObjectId,
   title: String,
   price: Number,
   description: String,
