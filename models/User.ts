@@ -17,10 +17,15 @@ const UserSchema = new Schema({
   },
   role: {
     type: String,
+    enum: ['CUSTOMER', 'ADMIN'],
     required: true,
     default: "CUSTOMER"
   },
-  avatar: String
+  avatar: {
+    type: String,
+    required: true,
+    default: "https://api.lorem.space/image/face?w=640&h=480&r=867"
+  }
 });
 
 export default mongoose.model("User", UserSchema, "users");
