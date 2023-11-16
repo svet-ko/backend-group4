@@ -1,7 +1,6 @@
 import mongoose from "mongoose"
 import OrdersRepo from "../models/Order.js"
 
-// admin protected
 async function getAllOrders() {
   const orders = await OrdersRepo.find().exec();
   return orders;

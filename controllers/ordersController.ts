@@ -6,8 +6,16 @@ import { ApiError } from "../errors/ApiError.js"
 import Item from "../models/Item.js";
 import { OrderRequest } from "../types/orderRequest.js";
 
-async function getAllOrders(_: Request, res: Response) {
+async function getAllOrders(
+    _: Request, 
+    res: Response, 
+    next: NextFunction
+) {
   const orders = await OrdersService.getAllOrders();
+  if (!orders) {
+    next(ApiError.resourceNotFound("No collection"));
+    return;
+  }
   res.json({ orders });
 }
 
@@ -35,7 +43,7 @@ async function createOrder(
     const totalPrice: number = await ProductsService.getTotalPrice(arr);
     const newOrder = await OrdersService.createOrder(userId, totalPrice);
     if (!newOrder) {
-        next(ApiError.resourceNotFound("Order could not be created"));
+        next(ApiError.internal("Order could not be created"));
         return;
     }
     const orderId = newOrder._id
@@ -58,14 +66,19 @@ async function deleteOrder(
     next: NextFunction
 ) {
     const id = req.params.orderId;
-    const order = OrdersService.getOrderById(id);
+    const order = await OrdersService.getOrderById(id);
     if (order === null) {
       next(ApiError.resourceNotFound("Order that you are trying to delete does not exist")); 
       return;
     }
     await OrdersService.deleteOrder(id);
     await ItemsService.deleteItemsByOrderId(id);
-    res.status(201).json({message: "Order deleted"});
+    const deletedOrder = await OrdersService.getOrderById(id);
+    if (deletedOrder !== null) {
+        next(ApiError.internal("Deleting failed")); 
+        return;
+    }
+    res.status(201).json({message: "Order deleted successfully"});
 }
 
 async function deleteAllOrders(
@@ -75,7 +88,14 @@ async function deleteAllOrders(
 ) {
     await OrdersService.deleteAllOrders();
     await ItemsService.deleteAllItems();
-    res.status(201).json({ message: 'All orders deleted successfully' });
+    const deletedOrders = await OrdersService.getAllOrders();
+    const deletedItems = await ItemsService.getAllItems();
+    if (deletedItems !== null && deletedOrders !== null) {
+        next(ApiError.internal("Deleting failed")); 
+        return;
+    }
+    res.status(201).json({ message: 'All orders (and order items) deleted successfully' });
+
 }
 
 async function deleteAllOrdersByUserId(
@@ -88,6 +108,11 @@ async function deleteAllOrdersByUserId(
     const ids = orders.map(order => order._id)
     await OrdersService.deleteAllOrdersByUserId(userId);
     await ItemsService.deleteItemsFromMultipleOrders(ids);
+    const deletedOrders = await OrdersService.getOrdersByUserId(userId);
+    if (deletedOrders !== null) {
+        next(ApiError.internal("Deleting failed")); 
+        return;
+    }
     res.status(201).json({ message: 'Orders deleted successfully' });
 }
 
@@ -96,6 +121,6 @@ export default {
     getOrdersByUserId,
     createOrder,
     deleteOrder,
-    deleteAllOrders, // should be protected for highest level
+    deleteAllOrders, 
     deleteAllOrdersByUserId
 }
