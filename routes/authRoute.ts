@@ -6,7 +6,11 @@ import { checkAuth as authenticateLoginRequest } from "../middlewares/checkAuth.
 
 const router = express.Router();
 
-router.post("/signup", validateNewUserRequest, UsersController.createUser);
+router.post(
+    "/signup", 
+    validateNewUserRequest, 
+    UsersController.createUser
+);
 router.post(
     "/login", 
     validateLoginRequest, 

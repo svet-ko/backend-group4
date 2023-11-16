@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express"
-import crypto from "crypto"
 import bcrypt from "bcryptjs"
 import UsersRepo from "../models/User.js"
 import UsersService from "../services/usersService.js"
 import { ApiError } from "../errors/ApiError.js"
 import { LoginRequest } from "../types/auth.js"
-import { TokenPayload, User} from "../types/user.js"
+import { TokenPayload } from "../types/auth.js"
 
 async function getAllUsers(_: Request, res: Response) {
   const users = await UsersService.getAllUsers();
@@ -20,7 +19,7 @@ async function getUserById(
   const userId = req.params.userId;
   const user = await UsersService.getUserById(userId);
   if (!user) {
-    next(ApiError.resourceNotFound("User not found."));
+    next(ApiError.resourceNotFound("User not found"));
     return;
   }
   res.json({ user });
@@ -29,7 +28,6 @@ async function getUserById(
 async function createUser(req: Request, res: Response, next: NextFunction) {
   const newUser = req.body;
   const user = await UsersService.createUser(newUser);
-  console.log("user with hashed psw? ", user);
   if (!user) {
     next(ApiError.internal("User could not be created"));
     return;
@@ -38,7 +36,7 @@ async function createUser(req: Request, res: Response, next: NextFunction) {
     id: user._id.toString(),
     name: user.name,
     email: user.email,
-    role: !user.role ? "CUSTOMER" : "ADMIN",
+    role: !user.role ? "CUSTOMER" : user.role,
     avatar: !user.avatar ? "https://api.lorem.space/image/face?w=640&h=480&r=867" : user.avatar
   }
   const token = await UsersService.getToken(payload);
@@ -51,17 +49,16 @@ async function login(
   next: NextFunction
 ) {
   const loginRequest: LoginRequest = req.body;
-  const hashedPsw = await bcrypt.hash(loginRequest.password, 10);
-  //const password = hashedPsw.toString();
   const user = await UsersRepo.findOne({ email: loginRequest.email });
+
   if (!user) {
     return res.json({message: "Not in the system, please signup first"});
   }
-  const isValid = bcrypt.compareSync(hashedPsw, user.password);
+  const isValid = await bcrypt.compare(loginRequest.password, user.password);
+  
   if (!isValid) {
     return res.json({message: "Invalid password"});
   }
-
   const payload: TokenPayload = {
       id: user._id.toString(),
       name: user.name,
@@ -69,8 +66,8 @@ async function login(
       role: user.role,
       avatar: user.avatar
   }
-
   const token = await UsersService.getToken(payload);
+  
   if (!token) {
     next(ApiError.unauthorized("Incorrect email or password"));
     return;

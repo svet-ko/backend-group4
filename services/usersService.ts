@@ -2,8 +2,8 @@ import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
 import UsersRepo from "../models/User.js"
-import { LoginRequest } from "../types/auth.js"
-import { TokenPayload, User } from "../types/user.js"
+import { TokenPayload } from "../types/auth.js"
+import { User } from "../types/user.js"
 
 async function getAllUsers() {
   const users = await UsersRepo.find().exec();
@@ -20,6 +20,7 @@ async function createUser(user: User) {
   const hashedPsw = await bcrypt.hash(user.password, 10);
   const newUser = new UsersRepo(user);
   newUser.password = hashedPsw;
+
   return await newUser.save();
 }
 
