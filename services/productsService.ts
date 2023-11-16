@@ -8,6 +8,7 @@ import { OrderRequest } from "../types/orderRequest.js";
 
 async function findAll() {
   const products = await ProductRepo.find().populate("category").exec();
+  
   return products;
 }
 
@@ -26,7 +27,6 @@ async function createOne(product: ProductToCreate) {
     delete product.categoryId;
     product.category = category;
     const newProduct = new ProductRepo(product);
-    console.log(newProduct);
     return await newProduct.save();
   }
   return false;

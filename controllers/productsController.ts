@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express"
 
 import ProductsService from "../services/productsService.js"
 import { ApiError } from "../errors/ApiError.js"
-import { ObjectId } from "mongoose"
 
 export async function findAllProduct(_: Request, res: Response) {
   const products = await ProductsService.findAll()
@@ -19,16 +18,25 @@ export async function findOneProduct(
   const product = await ProductsService.findOne(productId)
 
   if (!product) {
-    next(ApiError.resourceNotFound("Product not found."))
+    next(ApiError.resourceNotFound("Product is not found."))
     return
   }
 
   res.json({ product })
 }
 
-export async function createOneProduct(req: Request, res: Response) {
+export async function createOneProduct(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const newProduct = req.body
   const product = await ProductsService.createOne(newProduct)
+
+  if (!product) {
+    next(ApiError.resourceNotFound("Category id is not found"));
+    return;
+  }
 
   res.status(201).json({ product })
 }
@@ -42,7 +50,7 @@ export async function deleteOneProduct(
   const product = await ProductsService.deleteOne(productId);
 
   if (!product) {
-    next(ApiError.resourceNotFound("Product not found"));
+    next(ApiError.resourceNotFound("Product is not found"));
     return;
   }
 
@@ -57,10 +65,9 @@ export async function updateOneProduct(
   const productId = req.params.productId;
   const updatesForProduct = req.body;
   const productToUpdate = await ProductsService.findOne(productId);
-  console.log(productToUpdate);
 
   if (!productToUpdate) {
-    next(ApiError.resourceNotFound("Product not found"));
+    next(ApiError.resourceNotFound("Product is not found"));
     return;
   }
 

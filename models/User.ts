@@ -1,6 +1,4 @@
-import { NextFunction } from "express";
-import mongoose from "mongoose";
-import { User } from "../types/user.js";
+import mongoose from "mongoose"
 
 const Schema = mongoose.Schema;
 
@@ -29,13 +27,6 @@ const UserSchema = new Schema({
     default: "https://api.lorem.space/image/face?w=640&h=480&r=867"
   }
 });
-
-// UserSchema.pre('save', function(next: NextFunction) {
-//   if (!this.role) {
-//     this.role = 'CUSTOMER'; 
-//   }
-//   next();
-// });
 
 export default mongoose.model("User", UserSchema, "users");
 
