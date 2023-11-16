@@ -6,8 +6,12 @@ import { ApiError } from "../errors/ApiError.js"
 import { LoginRequest } from "../types/auth.js"
 import { TokenPayload } from "../types/auth.js"
 
-async function getAllUsers(_: Request, res: Response) {
+async function getAllUsers(_: Request, res: Response, next: NextFunction) {
   const users = await UsersService.getAllUsers();
+  if (!users) {
+    next(ApiError.resourceNotFound("No collection"));
+    return;
+  }
   res.json({users});
 }
 
@@ -52,12 +56,14 @@ async function login(
   const user = await UsersRepo.findOne({ email: loginRequest.email });
 
   if (!user) {
-    return res.json({message: "Not in the system, please signup first"});
+    next(ApiError.resourceNotFound("Not in the system, please signup first"));
+    return;
   }
   const isValid = await bcrypt.compare(loginRequest.password, user.password);
   
   if (!isValid) {
-    return res.json({message: "Invalid password"});
+    next(ApiError.unauthorized("Invalid password"));
+    return;
   }
   const payload: TokenPayload = {
       id: user._id.toString(),
@@ -69,7 +75,7 @@ async function login(
   const token = await UsersService.getToken(payload);
   
   if (!token) {
-    next(ApiError.unauthorized("Incorrect email or password"));
+    next(ApiError.internal("Token service failed"));
     return;
   }
   res.status(200).json({ token });
@@ -97,13 +103,18 @@ async function deleteUser(
   next: NextFunction
   ) {
     const id = req.params.userId;
-    const user = UsersService.getUserById(id);
+    const user = await UsersService.getUserById(id);
     if (user === null) {
       next(ApiError.resourceNotFound("User that you are trying to delete does not exist")); 
       return;
     }
     UsersService.deleteUser(id);
-    res.status(204).json({user});
+    const deletedUser = await UsersService.getUserById(id);
+    if (deletedUser !== null) {
+      next(ApiError.internal("Deleting failed")); 
+      return;
+    }
+    res.status(204).json({message: "User was deleted successfuly"});
 }
 
 export default {
