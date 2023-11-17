@@ -1,19 +1,19 @@
 import { NextFunction, Request, Response } from "express"
 import { categorySchema } from "../schemas/categorySchema.js"
 
-/*const productSchema = z.object({
-  body: z.object({
-    id: z.number({
-      required_error: "Id is required",
-    }),
-    name: z.string({
-      required_error: "Name is required",
-    }),
-    description: z.string({
-      required_error: "Description is required",
-    }),
-  }),
-});*/
+// const categorySchema = z.object({
+//   body: z.object({
+//     id: z.number({
+//       required_error: "Id is required",
+//     }),
+//     name: z.string({
+//       required_error: "Name is required",
+//     }),
+//     description: z.string({
+//       required_error: "Description is required",
+//     }),
+//   }),
+// });
 
 export async function validateCategory(
   req: Request,
