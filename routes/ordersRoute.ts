@@ -1,15 +1,37 @@
 import express from "express"
+import { checkAuth as authenticateUser } from "../middlewares/checkAuth.js"
+import { checkPermission as authorizePermission } from "../middlewares/checkPermission.js"
 import OrdersController from "../controllers/ordersController.js"
 
 const router = express.Router();
-
-// TO DO: auth middleware to authorize get all access
-router.get("/", OrdersController.getAllOrders);
-router.get("/user/:userId", OrdersController.getOrdersByUserId); 
-router.post("/checkout/:userId", OrdersController.createOrder);
-router.delete("/", OrdersController.deleteAllOrders); 
-router.delete("/:orderId", OrdersController.deleteOrder); 
-router.delete("/user/:userId", OrdersController.deleteAllOrdersByUserId);
+// routes admin only
+router.get("/", 
+    authenticateUser,
+    authorizePermission, 
+    OrdersController.getAllOrders
+);
+router.delete("/", 
+    authenticateUser, 
+    authorizePermission,
+    OrdersController.deleteAllOrders
+); 
+// routes for all logged in users
+router.get("/user/:userId", 
+    authenticateUser, 
+    OrdersController.getOrdersByUserId
+); 
+router.delete("/user/:userId", 
+    authenticateUser, 
+    OrdersController.deleteAllOrdersByUserId
+);
+router.post("/checkout/:userId", 
+    authenticateUser, 
+    OrdersController.createOrder
+);
+router.delete("/:orderId", 
+    authenticateUser, 
+    OrdersController.deleteOrder
+); 
 
 
 export default router;
