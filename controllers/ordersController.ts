@@ -48,13 +48,20 @@ async function createOrder(
     }
     const orderId = newOrder._id
     await Promise.all(
-        arr.map((item) => {
+        arr.map(async (item) => {
             const orderItem = new Item({
                 orderId,
                 productId: item.id,
                 quantity: item.quantity,
             });
             orderItem.save();
+            const _productId = orderItem.productId?.toString();
+            const _orderId = orderItem.orderId?.toString();
+            const savedItem = _productId && _orderId && await ItemsService.getItem(_productId, _orderId);
+            if (!savedItem) {
+                next(ApiError.internal("Item could not be created"));
+                return;
+            }
         })
     );  
     res.status(201).json({ newOrder });
