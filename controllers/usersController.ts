@@ -12,7 +12,7 @@ async function getAllUsers(_: Request, res: Response, next: NextFunction) {
     next(ApiError.resourceNotFound("No collection"));
     return;
   }
-  res.json({users});
+  res.json({ users });
 }
 
 async function getUserById(
@@ -114,7 +114,7 @@ async function deleteUser(
       next(ApiError.internal("Deleting failed")); 
       return;
     }
-    res.status(204).json({message: "User was deleted successfuly"});
+    res.status(204).json({msg: "User was deleted successfuly"});
 }
 
 export default {

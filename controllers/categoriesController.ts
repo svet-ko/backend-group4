@@ -3,6 +3,14 @@ import { NextFunction, Request, Response } from "express";
 import CategoriesService from "../services/categoriesService.js";
 import { ApiError } from "../errors/ApiError.js";
 
+interface ValidationError {
+  errors: {
+    [field: string]: {
+      message: string;
+    };
+  };
+}
+
 export async function getAllCategories(_: Request, res: Response) {
   const categories = await CategoriesService.getAll();
   res.json({ categories });
@@ -23,10 +31,18 @@ export async function getOneCategory(
   res.json({ category });
 }
 
-export async function createCategory(req: Request, res: Response) {
-  const newCategory = req.body;
-  const category = await CategoriesService.createCategory(newCategory);
-  res.status(201).json({ category });
+export async function createCategory(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const newCategory = req.body;
+    const category = await CategoriesService.createCategory(newCategory);
+    res.status(201).json({ category });
+  } catch (error: any) {
+    res.status(500).json({ msg: "something went wrong" });
+  }
 }
 
 export async function updateCategory(
