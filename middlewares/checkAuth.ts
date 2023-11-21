@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import { NextFunction, Response } from "express"
-import { ApiError } from "../errors/ApiError.js"
-import { AuthRequest, TokenPayload } from "../types/auth.js"
+import { ApiError } from "../errors/ApiError"
+import { AuthRequest, TokenPayload } from "../types/auth"
 
 export function checkAuth(
   req: AuthRequest,
@@ -16,7 +16,7 @@ export function checkAuth(
 
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET as string) as TokenPayload;
-    req.decoded = decoded;
+    req.decodedUser = decoded;
     next();
   } catch (err) {
     next(ApiError.forbidden("Invalid token"));

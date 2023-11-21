@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express"
-import { ApiError } from "../errors/ApiError.js"
-import { AuthRequest } from "../types/auth.js"
+import { ApiError } from "../errors/ApiError"
+import { AuthRequest } from "../types/auth"
 
 export function checkPermission(
   req: AuthRequest,

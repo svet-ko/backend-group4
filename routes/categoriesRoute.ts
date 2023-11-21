@@ -5,8 +5,8 @@ import {
   getOneCategory,
   updateCategory,
   deleteCategory,
-} from "../controllers/categoriesController.js";
-import { validateCategory } from "../middlewares/categoryValidate.js";
+} from "../controllers/categoriesController";
+import { validateCategory } from "../middlewares/categoryValidate";
 
 const router = express.Router();
 

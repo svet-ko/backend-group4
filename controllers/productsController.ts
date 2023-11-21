@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 
-import ProductsService from "../services/productsService.js"
-import { ApiError } from "../errors/ApiError.js"
+import ProductsService from "../services/productsService"
+import { ApiError } from "../errors/ApiError"
 
 export async function findAllProduct(_: Request, res: Response) {
   const products = await ProductsService.findAll()

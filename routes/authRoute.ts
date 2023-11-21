@@ -1,8 +1,8 @@
 import express from "express"
-import UsersController from "../controllers/usersController.js"
-import { validateLoginRequest } from "../middlewares/validateLoginRequest.js"
-import { validateNewUserRequest } from "../middlewares/validateNewUserRequest.js"
-import { checkAuth as authenticateLoginRequest } from "../middlewares/checkAuth.js"
+import UsersController from "../controllers/usersController"
+import { validateLoginRequest } from "../middlewares/validateLoginRequest"
+import { validateNewUserRequest } from "../middlewares/validateNewUserRequest"
+import { checkAuth as authenticateLoginRequest } from "../middlewares/checkAuth"
 
 const router = express.Router();
 

@@ -1,9 +1,9 @@
 import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
-import UsersRepo from "../models/User.js"
-import { TokenPayload } from "../types/auth.js"
-import { User } from "../types/user.js"
+import UsersRepo from "../models/User"
+import { TokenPayload } from "../types/auth"
+import { User } from "../types/user"
 
 async function getAllUsers() {
   const users = await UsersRepo.find().exec();

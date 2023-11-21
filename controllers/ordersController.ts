@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express"
-import OrdersService from "../services/ordersService.js"
-import ItemsService from "../services/itemsService.js"
-import ProductsService from "../services/productsService.js";
-import { ApiError } from "../errors/ApiError.js"
-import Item from "../models/Item.js";
-import { OrderRequest } from "../types/orderRequest.js";
+import OrdersService from "../services/ordersService"
+import ItemsService from "../services/itemsService"
+import ProductsService from "../services/productsService";
+import { ApiError } from "../errors/ApiError"
+import Item from "../models/Item";
+import { OrderRequest } from "../types/orderRequest";
 
 async function getAllOrders(
     _: Request, 
