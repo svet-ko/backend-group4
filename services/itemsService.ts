@@ -1,5 +1,5 @@
 import mongoose, { Types } from "mongoose"
-import ItemsRepo from "../models/Item.js"
+import ItemsRepo from "../models/Item"
 
 async function getAllItems(){
     const items = await ItemsRepo.find().exec();

@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express"
 import bcrypt from "bcryptjs"
-import UsersRepo from "../models/User.js"
-import UsersService from "../services/usersService.js"
-import { ApiError } from "../errors/ApiError.js"
-import { LoginRequest } from "../types/auth.js"
-import { TokenPayload } from "../types/auth.js"
+import UsersRepo from "../models/User"
+import UsersService from "../services/usersService"
+import { ApiError } from "../errors/ApiError"
+import { LoginRequest } from "../types/auth"
+import { TokenPayload } from "../types/auth"
 
 async function getAllUsers(_: Request, res: Response, next: NextFunction) {
   const users = await UsersService.getAllUsers();

@@ -1,10 +1,10 @@
-import mongoose, { ObjectId } from "mongoose";
+import mongoose from "mongoose";
 
-import ProductRepo from "../models/Product.js";
-import { Product, ProductToCreate } from "../types/products.js";
-import CategoryRepo from "../models/Category.js";
-import { Category } from "../types/category.js";
-import { OrderRequest } from "../types/orderRequest.js";
+import ProductRepo from "../models/Product";
+import { Product, ProductToCreate } from "../types/products";
+import CategoryRepo from "../models/Category";
+import { Category } from "../types/category";
+import { OrderRequest } from "../types/orderRequest";
 
 async function findAll() {
   const products = await ProductRepo.find().populate("category").exec();

@@ -1,7 +1,7 @@
 import express from "express"
-import { checkAuth as authenticateUser } from "../middlewares/checkAuth.js"
-import { checkPermission as authorizePermission } from "../middlewares/checkPermission.js"
-import OrdersController from "../controllers/ordersController.js"
+import { checkAuth as authenticateUser } from "../middlewares/checkAuth"
+import { checkPermission as authorizePermission } from "../middlewares/checkPermission"
+import OrdersController from "../controllers/ordersController"
 
 const router = express.Router();
 // routes admin only

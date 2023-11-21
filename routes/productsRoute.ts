@@ -1,7 +1,7 @@
 import express from "express"
 
-import ProductController from "../controllers/productsController.js"
-import { validateProduct } from "../middlewares/productValidate.js"
+import ProductController from "../controllers/productsController"
+import { validateProduct } from "../middlewares/productValidate"
 import { checkAuth as authenticateUser } from "../middlewares/checkAuth.js"
 import { checkPermission as authorizePermission } from "../middlewares/checkPermission.js"
 

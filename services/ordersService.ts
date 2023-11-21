@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import OrdersRepo from "../models/Order.js"
+import OrdersRepo from "../models/Order"
 
 async function getAllOrders() {
   const orders = await OrdersRepo.find().exec();

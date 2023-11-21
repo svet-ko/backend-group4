@@ -1,7 +1,6 @@
 import { z } from "zod"
-import mongoose from "mongoose";
-
-import { categorySchema } from "./categorySchema.js"
+import mongoose from "mongoose"
+import { categorySchema } from "./categorySchema"
 
 export const productSchema = z
   .object({

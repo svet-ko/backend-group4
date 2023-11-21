@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Request } from "express"
-import { loginRequestSchema } from "../schemas/loginRequestSchema.js"
-import { User } from "./user.js"
+import { loginRequestSchema } from "../schemas/loginRequestSchema"
+import { User } from "./user"
 
 export type LoginRequest = z.infer<typeof loginRequestSchema>
 

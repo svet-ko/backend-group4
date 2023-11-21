@@ -5,12 +5,10 @@ import {
   getOneCategory,
   updateCategory,
   deleteCategory,
-} from "../controllers/categoriesController.js";
+} from "../controllers/categoriesController";
+import { validateCategory } from "../middlewares/categoryValidate";
 import { checkAuth as authenticateUser } from "../middlewares/checkAuth.js";
-import {
-  checkPermission as authorizePermission,
-} from "../middlewares/checkPermission.js";
-// import { validateCategory } from "../middlewares/categoryValidate.js";
+import { checkPermission as authorizePermission } from "../middlewares/checkPermission.js";
 
 const router = express.Router();
 
