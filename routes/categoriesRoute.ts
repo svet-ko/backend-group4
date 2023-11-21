@@ -7,13 +7,15 @@ import {
   deleteCategory,
 } from "../controllers/categoriesController";
 import { validateCategory } from "../middlewares/categoryValidate";
+import { checkAuth as authenticateUser } from "../middlewares/checkAuth.js";
+import { checkPermission as authorizePermission } from "../middlewares/checkPermission.js";
 
 const router = express.Router();
 
-router.get("/", getAllCategories);
-router.get("/:categoryId", getOneCategory);
-router.post("/", validateCategory, createCategory);
-router.put("/:categoryId", updateCategory);
-router.delete("/:categoryId", deleteCategory);
+router.get("/", authenticateUser, authorizePermission, getAllCategories);
+router.get("/:categoryId", authenticateUser, getOneCategory);
+router.post("/",  authenticateUser, createCategory);
+router.put("/:categoryId", authenticateUser, updateCategory);
+router.delete("/:categoryId", authenticateUser, deleteCategory);
 
 export default router;
