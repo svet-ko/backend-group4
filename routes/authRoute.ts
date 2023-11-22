@@ -1,6 +1,5 @@
 import express from "express"
 import passport from "passport"
-import jwt from "jsonwebtoken"
 
 import UsersController from "../controllers/usersController"
 import { validateLoginRequest } from "../middlewares/validateLoginRequest"
@@ -24,27 +23,7 @@ router.post(
 router.post(
     "/login-google",
     passport.authenticate("google-id-token", { session: false }),
-    (req: any, res) => {
-      const user = req.user
-  
-      if (user) {
-        const payload = {
-          userId: user._id,
-          email: user.email,
-          role: user.role,
-        }
-        const accessToken = jwt.sign(
-          payload,
-          process.env.TOKEN_SECRET as string,
-          {
-            expiresIn: "1h",
-          }
-        )
-        res.json({
-          accessToken,
-        })
-      }
-    }
+    UsersController.googleLogin
   )
 
 export default router;
