@@ -2,8 +2,8 @@ import express from "express"
 
 import ProductController from "../controllers/productsController"
 import { validateProduct } from "../middlewares/productValidate"
-import { checkAuth as authenticateUser } from "../middlewares/checkAuth.js"
-import { checkPermission as authorizePermission } from "../middlewares/checkPermission.js"
+import { checkAuth as authenticateUser } from "../middlewares/checkAuth"
+import { checkPermission as authorizePermission } from "../middlewares/checkPermission"
 
 const router = express.Router()
 router.get("/", ProductController.findAllProduct)

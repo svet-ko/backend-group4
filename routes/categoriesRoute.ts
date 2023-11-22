@@ -7,8 +7,8 @@ import {
   deleteCategory,
 } from "../controllers/categoriesController";
 import { validateCategory } from "../middlewares/categoryValidate";
-import { checkAuth as authenticateUser } from "../middlewares/checkAuth.js";
-import { checkPermission as authorizePermission } from "../middlewares/checkPermission.js";
+import { checkAuth as authenticateUser } from "../middlewares/checkAuth";
+import { checkPermission as authorizePermission } from "../middlewares/checkPermission";
 
 const router = express.Router();
 
