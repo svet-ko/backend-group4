@@ -1,6 +1,12 @@
 import { MongoMemoryServer } from "mongodb-memory-server"
 import mongoose from "mongoose"
 
+jest.mock('../utils/connectDb', () => {
+  return {
+    connectDb: jest.fn()
+  }
+})
+
 async function connect() {
   const mongod = await MongoMemoryServer.create()
   const uri = await mongod.getUri()
