@@ -3,14 +3,6 @@ import app from "../../"
 import UserService from "../../services/usersService"
 import connect, { MongoHelper } from "../dbHelper"
 
-/*jest.mock('../services/UsersService', () => ({
-  createUser: jest.fn().mockResolvedValue({
-    _id: 'user_id',
-    name: 'Test User',
-    email: 'test@example.com',
-  }),
-  getToken: jest.fn().mockReturnValue('mocked_token'),
-}));*/
 
 describe("User controllers", () => {
   let mongoHelper: MongoHelper;
@@ -52,7 +44,6 @@ describe("User controllers", () => {
     });
   });*/
   
-  describe('User Controller - createUser', () => {
     it('should return a token when creating a user', async () => {
       const res = await request(app).post("/api/v1/users/signup");
   
@@ -74,4 +65,3 @@ describe("User controllers", () => {
       name: "category1",
     });
   });*/
-});

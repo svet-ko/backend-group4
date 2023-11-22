@@ -19,6 +19,7 @@ async function connect() {
       await mongoose.connection.close()
 
       await mongod.stop()
+      await mongoose.disconnect();
     },
     clearDatabase: async () => {
       const collections = mongoose.connection.collections
