@@ -14,7 +14,7 @@ router.post(
 router.post(
     "/login", 
     validateLoginRequest, 
-    authenticateLoginRequest, 
+    //authenticateLoginRequest, 
     UsersController.login
 );
 

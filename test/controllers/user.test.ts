@@ -66,50 +66,46 @@ describe("User controllers", () => {
   });
 
   it('should update user details', async () => {
+  
     await UserService.createUser({
-      id:"6555c6003cf167f32a077849",
+      id:"",
       name: "user",
-      email:"user@email.com",
-      password:"122345",
-      avatar:"",
-      role:"CUSTOMER"
+      email: "user@email.com",
+      password: "122345",
+      avatar: "",
+      role: "CUSTOMER"
     });
-
-
+  
     const userUpdates = {
-      name:"UPDATED USER",
-      password:"updated_password"
+      name: "UPDATED USER",
+      password: "updated_password"
     }
-
+  
     const adminToken = await UserService.getToken({
-      id:"111",
+      id: "111",
       name: "admin",
-      email:"admin@email.com",
-      avatar:"",
-      role:"ADMIN"
+      email: "admin@email.com",
+      avatar: "",
+      role: "ADMIN"
     });
+
+    const addedUser = await UsersRepo.findOne({email:"user@email.com"})
 
     const response = await request(app)
-      .put("/api/v1/users/655f75ce3739e50845dec535")
+      .put(`/api/v1/users/${addedUser?._id.toString()}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send(userUpdates);
 
-    const users = await request(app)
-      .get("/api/v1/users")
-      .set('Authorization', `Bearer ${adminToken}`);
-
-    console.log('USERS: ', users.body.users);
-    console.log('response: ', response.body);
-
     expect(response.status).toBe(200);
     expect(response.body.updatedUser).toMatchObject({
-      name:"UPDATED USER",
-      password:"updated_password"
+      name: "UPDATED USER",
+      password: "updated_password"
     });
   });
+  
   it('Should delete user', async ()=> {
-    await UserService.createUser({
-      id:"655f75ce3739e50845dec535",
+    const addedUser = await UserService.createUser({
+      id:"",
       name: "user",
       email:"user@email.com",
       password:"122345",
@@ -126,9 +122,31 @@ describe("User controllers", () => {
     });
 
     const response = await request(app)
-      .delete("/api/v1/users/655f75ce3739e50845dec535")
+      .delete(`/api/v1/users/${addedUser?._id.toString()}`)
       .set('Authorization', `Bearer ${adminToken}`);
 
     expect(response.status).toBe(204);
+  })
+
+  it('Should login an existing user', async ()=> {
+    const addedUser = await UserService.createUser({
+      id:"",
+      name: "user",
+      email:"user@email.com",
+      password:"122345",
+      avatar:"",
+      role:"CUSTOMER"
+    });
+
+    const loginRequest = {
+      email:"user@email.com",
+      password:"122345"
+    }
+    const response = await request(app)
+      .post(`/api/v1/auth/login`)
+      .send(loginRequest);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("token");
   })
 });
