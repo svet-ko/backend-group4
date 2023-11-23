@@ -23,7 +23,12 @@ describe("User controllers", () => {
   });
 
   it('should return a token when creating a user', async () => {
-    console.log("-----------")
-    console.log("-------öööööööööööö----")
+    const response = await request(app).post("/api/v1/auth/signup").send({
+      name: "user",
+      email:"user@email.com",
+      password:"12324556"
+    })
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty("token");
   });
 });
