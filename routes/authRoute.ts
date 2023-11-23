@@ -1,4 +1,6 @@
 import express from "express"
+import passport from "passport"
+
 import UsersController from "../controllers/usersController"
 import { validateLoginRequest } from "../middlewares/validateLoginRequest"
 import { validateNewUserRequest } from "../middlewares/validateNewUserRequest"
@@ -17,5 +19,11 @@ router.post(
     //authenticateLoginRequest, 
     UsersController.login
 );
+
+router.post(
+    "/login-google",
+    passport.authenticate("google-id-token", { session: false }),
+    UsersController.googleLogin
+  )
 
 export default router;
