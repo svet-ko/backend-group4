@@ -24,5 +24,6 @@ describe("User controllers", () => {
 
   it('should return a token when creating a user', async () => {
     console.log("-----------")
+    console.log("-------öööööööööööö----")
   });
 });
