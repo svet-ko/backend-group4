@@ -65,6 +65,33 @@ describe("User controllers", () => {
     });
   });
 
+
+  it("should find user by id", async () => {
+    const addedUser = await UserService.createUser({
+      id:"112",
+      name: "user",
+      email:"user@email.com",
+      password:"122345",
+      avatar:"",
+      role:"CUSTOMER"
+    });
+
+    const adminToken = await UserService.getToken({
+      id:"111",
+      name: "admin",
+      email:"admin@email.com",
+      avatar:"",
+      role:"ADMIN"
+    });
+    const response = await request(app)
+      .get(`/api/v1/users/${addedUser?._id.toString()}`)
+      .set('Authorization', `Bearer ${adminToken}`);
+
+    expect(response.body.user).toMatchObject({
+      email:"user@email.com"
+    });
+  });
+
   it('should update user details', async () => {
   
     await UserService.createUser({
@@ -126,6 +153,7 @@ describe("User controllers", () => {
       .set('Authorization', `Bearer ${adminToken}`);
 
     expect(response.status).toBe(204);
+    expect(response.body).toMatchObject({ msg: "User was deleted successfuly"});
   })
 
   it('Should login an existing user', async ()=> {
