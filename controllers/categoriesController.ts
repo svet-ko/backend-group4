@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
-import CategoriesService from "../services/categoriesService.js";
-import { ApiError } from "../errors/ApiError.js";
+import CategoriesService from "../services/categoriesService";
+import { ApiError } from "../errors/ApiError";
 
 interface ValidationError {
   errors: {

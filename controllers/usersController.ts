@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express"
 import bcrypt from "bcryptjs"
-import UsersRepo from "../models/User.js"
-import UsersService from "../services/usersService.js"
-import { ApiError } from "../errors/ApiError.js"
-import { LoginRequest } from "../types/auth.js"
-import { TokenPayload } from "../types/auth.js"
+
+import UsersRepo from "../models/User"
+import UsersService from "../services/usersService"
+import { ApiError } from "../errors/ApiError"
+import { LoginRequest } from "../types/auth"
+import { TokenPayload } from "../types/auth"
 
 async function getAllUsers(_: Request, res: Response, next: NextFunction) {
   const users = await UsersService.getAllUsers();
@@ -59,7 +60,7 @@ async function login(
     next(ApiError.resourceNotFound("Not in the system, please signup first"));
     return;
   }
-  const isValid = await bcrypt.compare(loginRequest.password, user.password);
+  const isValid = await bcrypt.compare(loginRequest.password, user.password as string);
   
   if (!isValid) {
     next(ApiError.unauthorized("Invalid password"));
@@ -79,6 +80,35 @@ async function login(
     return;
   }
   res.status(200).json({ token });
+}
+
+async function googleLogin(
+  req: any,
+  res: Response,
+  next: NextFunction
+) {
+  const user = req.user
+
+  if (user) {
+    const payload: TokenPayload = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      avatar: user.avatar
+    }
+
+    const token = await UsersService.getToken(payload);
+    
+    if (!token) {
+      next(ApiError.forbidden("Invalid credentials"));
+      return;
+    }
+
+    res.status(200).json({
+      token,
+    })
+  }
 }
 
 async function updateUser(
@@ -123,6 +153,7 @@ export default {
   login,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  googleLogin
 }
 

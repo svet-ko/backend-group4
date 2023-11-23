@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { categorySchema } from "../schemas/categorySchema.js"
+import { categorySchema } from "../schemas/categorySchema"
 
 // const categorySchema = z.object({
 //   body: z.object({
