@@ -32,5 +32,5 @@ export const productToCreateSchema = z.object({
       category: z.undefined(),
     })
   )
-  .strict(),
+  .strict()
 });
