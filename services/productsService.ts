@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import ProductRepo from "../models/Product";
-import { Product, ProductToCreate } from "../types/products";
+import { Product, ProductDTO, ProductToCreate } from "../types/products";
 import CategoryRepo from "../models/Category";
 import { Category } from "../types/category";
 import { OrderRequest } from "../types/orderRequest";
@@ -14,7 +14,7 @@ async function findAll() {
 
 async function findOne(productId: string) {
   const id = new mongoose.Types.ObjectId(productId);
-  const product = await ProductRepo.findById(id);
+  const product = await ProductRepo.findById(id).populate("category");
 
   return product;
 }
@@ -25,27 +25,28 @@ async function createOne(product: ProductToCreate) {
   });
   if (category) {
     delete product.categoryId;
-    product.category = category;
-    const newProduct = new ProductRepo(product);
-    return await newProduct.save();
+    const newProduct: ProductDTO = {...product, category: category};
+    const responseProduct = new ProductRepo(newProduct);
+    return await responseProduct.save();
   }
   return false;
 }
 
 async function updateOne(
   productId: string,
-  updatesForProduct: Partial<ProductToCreate>
+  updatesForProductInput: Partial<ProductToCreate>
 ) {
   const id = new mongoose.Types.ObjectId(productId);
+  let updatesWithCategory: Partial<ProductDTO> | undefined;
 
-  if (!!updatesForProduct.categoryId) {
+  if (!!updatesForProductInput.categoryId) {
     const category: Category | null = await CategoryRepo.findOne({
-      _id: updatesForProduct.categoryId,
+      _id: updatesForProductInput.categoryId,
     });
 
     if (category) {
-      delete updatesForProduct.categoryId;
-      updatesForProduct.category = category;
+      delete updatesForProductInput.categoryId;
+      updatesWithCategory = {...updatesForProductInput, category: category};
     } else {
       return;
     }
@@ -53,7 +54,7 @@ async function updateOne(
 
   const result = await ProductRepo.updateOne(
     { _id: id },
-    { $set: updatesForProduct }
+    { $set: !!updatesWithCategory ? updatesWithCategory : updatesForProductInput }
   );
 
   if (!result) {
@@ -83,7 +84,7 @@ async function getTotalPrice(
 
 async function deleteOne(productId: string) {
   const id = new mongoose.Types.ObjectId(productId);
-  return await ProductRepo.findByIdAndDelete(id);
+  return await ProductRepo.findByIdAndDelete(id).populate("category");
 }
 
 export default {
