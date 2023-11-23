@@ -35,7 +35,3 @@ app.use(routeNotFound);
 //   console.log(`:eyes: app is running at localhost:${PORT}`);
 // });
 export default app;
-// app.listen(PORT, () => {
-//   console.log(`:eyes: app is running at localhost:${PORT}`);
-// });
-export default app;
