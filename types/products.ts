@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 
 import { productSchema } from '../schemas/productSchema'
 
-export type ProductDTO = z.infer<typeof productSchema>;
-export type Product = ProductDTO & { _id: string };
+export interface ProductDTO extends z.infer<typeof productSchema> {};
+export interface Product extends ProductDTO { _id: string };
 export type ProductToCreate = Omit<ProductDTO, "category"> & {
   categoryId?: string;
 };
