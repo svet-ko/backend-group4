@@ -29,7 +29,7 @@ async function createOne(product: ProductToCreate) {
     const responseProduct = new ProductRepo(newProduct);
     return await responseProduct.save();
   }
-  return false;
+  return null;
 }
 
 async function updateOne(
