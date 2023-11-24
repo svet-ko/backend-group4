@@ -1,6 +1,6 @@
 import mongoose, { ObjectId } from "mongoose";
 import CategoryRepo from "../models/Category";
-import { Category } from "../types/category";
+import { Category, CreateCategoryInput } from "../types/category";
 
 async function getAll() {
   const categories = await CategoryRepo.find().exec();
@@ -13,7 +13,7 @@ async function getOne(categoryId: string) {
   return category;
 }
 
-async function createCategory(category: Category) {
+async function createCategory(category: CreateCategoryInput) {
   const newCategory = new CategoryRepo(category);
   return await newCategory.save();
 }
