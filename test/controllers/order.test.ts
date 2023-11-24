@@ -3,6 +3,8 @@ import app from "../../";
 import UserService from "../../services/usersService";
 import connect, { MongoHelper } from "../dbHelper";
 import { createProductAsAdmin } from "../__fixtures__/createProductAsAdmin";
+import ItemsService from "../../services/itemsService";
+import OrdersRepo from "../../models/Order"
 
 describe("ORDER  CONTROLLERS", () => {
   let mongoHelper: MongoHelper | undefined; 
@@ -23,7 +25,7 @@ describe("ORDER  CONTROLLERS", () => {
     }
   });
 
-  it('should create an order and associated items successfully', async () => {
+  test('createOrder', async () => {
 
     const addedUser = await UserService.createUser({
         id:"",
@@ -55,8 +57,89 @@ describe("ORDER  CONTROLLERS", () => {
       .post(`/api/v1/orders/checkout/${userId}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send(orderRequest);
+    
+    const items = await ItemsService.getAllItems();
 
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('newOrder');
+    expect(items.length).toBe(2);
   });
+  test('getAllOrders - admin only', async () => {
+
+    const adminToken = await UserService.getToken({
+        id: "111",
+        name: "admin",
+        email: "admin@email.com",
+        avatar: "",
+        role: "ADMIN"
+      });
+      const addedUser = await UserService.createUser({
+        id:"",
+        name: "user",
+        email:"user@email.com",
+        password:"122345",
+        avatar:"",
+        role:"CUSTOMER"
+    });
+
+    const userId = addedUser._id.toString();
+    const order1 = new OrdersRepo({ userId: userId, totalPrice: 100 });
+    await order1.save();
+    const order2 = new OrdersRepo({ userId: userId, totalPrice: 100 });
+    await order2.save();
+    
+    const response = await request(app)
+      .get(`/api/v1/orders`)
+      .set('Authorization', `Bearer ${adminToken}`);
+
+    expect(response.body.orders.length).toBe(2);
+  });
+
+  test('deleteAllOrders - admin only', async () => {
+
+    const adminToken = await UserService.getToken({
+        id: "111",
+        name: "admin",
+        email: "admin@email.com",
+        avatar: "",
+        role: "ADMIN"
+      });
+      const addedUser = await UserService.createUser({
+        id:"",
+        name: "user",
+        email:"user@email.com",
+        password:"122345",
+        avatar:"",
+        role:"CUSTOMER"
+    });
+
+    const userId = addedUser._id.toString();
+    const order1 = new OrdersRepo({ userId: userId, totalPrice: 100 });
+    await order1.save();
+    const order2 = new OrdersRepo({ userId: userId, totalPrice: 100 });
+    await order2.save();
+    
+    const response = await request(app)
+      .delete(`/api/v1/orders/`)
+      .set('Authorization', `Bearer ${adminToken}`);
+    
+    expect(response.status).toBe(204);
+    expect(response.body).toMatchObject({ msg: 'All orders (and order items) deleted successfuly' })
+    // DELETING 500 INTERNAL ERROR !!! same in user.test
+  })
+
+  test('deleteOrder', async () => {
+    const token = await UserService.getToken({
+      id: "111",
+      name: "admin",
+      email: "admin@email.com",
+      avatar: "",
+      role:"CUSTOMER"
+    });
+    const orderId = "";
+    
+    const response = await request(app)
+      .delete(`/api/v1/orders/${orderId}`)
+      .set('Authorization', `Bearer ${token}`);
+  })
 })
