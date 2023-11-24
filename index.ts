@@ -17,6 +17,7 @@ const PORT = 8080;
 const app = express();
 app.use(express.json());
 
+//connectDb();
 app.use(passport.initialize())
 passport.use(loginWithGoogle())
 //connectDb();
@@ -31,7 +32,9 @@ app.use("/api/v1/products", productsRoute);
 app.use("/api/v1/orders", ordersRoute);
 app.use(apiErrorHandler);
 app.use(routeNotFound);
+
 // app.listen(PORT, () => {
-//   console.log(`:eyes: app is running at localhost:${PORT}`);
+//   console.log(`👀 app is running at localhost:${PORT}`);
 // });
+
 export default app;
