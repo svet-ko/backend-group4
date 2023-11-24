@@ -22,7 +22,7 @@ const UserSchema = new Schema({
   },
   avatar: {
     type: String,
-    required: true,
+    //required: true,
     default: "https://api.lorem.space/image/face?w=640&h=480&r=867"
   }
 });
