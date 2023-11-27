@@ -90,7 +90,7 @@ describe("Category controllers", () => {
       .put(`/api/v1/categories/${categoryId}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
-        "name": "Different name",
+        name: "Different name",
       });
 
     console.log(response.body); // Log the entire response for debugging
