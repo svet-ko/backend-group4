@@ -13,7 +13,7 @@ interface ValidationError {
 
 export async function getAllCategories(_: Request, res: Response) {
   const categories = await CategoriesService.getAll();
-  res.json({ categories });
+  res.json(categories);
 }
 
 export async function getOneCategory(
@@ -28,7 +28,7 @@ export async function getOneCategory(
     next(ApiError.resourceNotFound("Category not found."));
     return;
   }
-  res.json({ category });
+  res.json(category);
 }
 
 export async function createCategory(

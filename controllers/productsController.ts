@@ -6,7 +6,7 @@ import { ApiError } from "../errors/ApiError"
 export async function findAllProduct(_: Request, res: Response) {
   const products = await ProductsService.findAll()
 
-  res.json({ products })
+  res.json(products);
 }
 
 export async function findOneProduct(
@@ -22,7 +22,7 @@ export async function findOneProduct(
     return
   }
 
-  res.json({ product })
+  res.json(product);
 }
 
 export async function createOneProduct(
@@ -38,7 +38,7 @@ export async function createOneProduct(
     return;
   }
 
-  res.status(201).json({ product })
+  res.status(201).json(product)
 }
 
 export async function deleteOneProduct(
@@ -54,7 +54,7 @@ export async function deleteOneProduct(
     return;
   }
 
-  res.json({ product });
+  res.json(product);
 }
 
 export async function updateOneProduct(

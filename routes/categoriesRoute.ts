@@ -12,8 +12,8 @@ import { checkPermission as authorizePermission } from "../middlewares/checkPerm
 
 const router = express.Router();
 
-router.get("/", authenticateUser, authorizePermission, getAllCategories);
-router.get("/:categoryId", authenticateUser, getOneCategory);
+router.get("/", getAllCategories);
+router.get("/:categoryId", getOneCategory);
 router.post("/",  authenticateUser, createCategory);
 router.put("/:categoryId", authenticateUser, updateCategory);
 router.delete("/:categoryId", authenticateUser, deleteCategory);

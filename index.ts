@@ -13,11 +13,13 @@ import usersRoute from "./routes/usersRoute"
 import ordersRoute from "./routes/ordersRoute"
 import { connectDb } from "./utils/connectDb"
 import server from "./utils/server"
+import cors from "cors"
 const PORT = 8080;
 const app = express();
 app.use(express.json());
+app.use(cors());
 
-//connectDb();
+connectDb();
 app.use(passport.initialize())
 passport.use(loginWithGoogle())
 //connectDb();
@@ -33,8 +35,8 @@ app.use("/api/v1/orders", ordersRoute);
 app.use(apiErrorHandler);
 app.use(routeNotFound);
 
-// app.listen(PORT, () => {
-//   console.log(`👀 app is running at localhost:${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`👀 app is running at localhost:${PORT}`);
+});
 
 export default app;
