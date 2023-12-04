@@ -82,11 +82,3 @@ export async function deleteCategory(
   CategoriesService.deleteCategory(categoryId);
   res.status(200).json({ category });
 }
-
-export default {
-  getOneCategory,
-  getAllCategories,
-  createCategory,
-  updateCategory,
-  deleteCategory,
-};

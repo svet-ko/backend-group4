@@ -15,9 +15,14 @@ router.post(
 );
 router.post(
     "/login", 
-    validateLoginRequest, 
-    //authenticateLoginRequest, 
+    validateLoginRequest,
     UsersController.login
+);
+
+router.get(
+    "/profile", 
+    authenticateLoginRequest, 
+    UsersController.getUserProfile
 );
 
 router.post(

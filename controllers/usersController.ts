@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from "express"
 import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
 
 import UsersRepo from "../models/User"
 import UsersService from "../services/usersService"
 import { ApiError } from "../errors/ApiError"
 import { LoginRequest } from "../types/auth"
 import { TokenPayload } from "../types/auth"
+import usersService from "../services/usersService"
 
 async function getAllUsers(_: Request, res: Response, next: NextFunction) {
   const users = await UsersService.getAllUsers();
@@ -32,20 +34,17 @@ async function getUserById(
 
 async function createUser(req: Request, res: Response, next: NextFunction) {
   const newUser = req.body;
+  const isUser = await UsersRepo.findOne({ email: newUser.email});
+  if (isUser) {
+    next(ApiError.forbidden("This email address is already in the system"));
+    return;
+  }
   const user = await UsersService.createUser(newUser);
   if (!user) {
     next(ApiError.internal("User could not be created"));
     return;
   }
-  const payload: TokenPayload = {
-    id: user._id.toString(),
-    name: user.name,
-    email: user.email,
-    role: !user.role ? "CUSTOMER" : user.role,
-    avatar: !user.avatar ? "https://api.lorem.space/image/face?w=640&h=480&r=867" : user.avatar
-  }
-  const token = await UsersService.getToken(payload);
-  res.status(201).json({ token })
+  res.status(201).json(user)
 }
 
 async function login(
@@ -79,7 +78,27 @@ async function login(
     next(ApiError.internal("Token service failed"));
     return;
   }
-  res.status(200).json({ token });
+  res.status(200).json({ token, user });
+}
+
+async function getUserProfile(
+  req: any,
+  res: Response,
+  next: NextFunction
+) {
+  const userId = req?.decodedUser;
+  if (!userId) {
+    next(ApiError.unauthorized("Invalid token"));
+    return;
+  }
+  const user = await usersService.getUserById(userId.id);
+  
+  if (!user) {
+    next(ApiError.resourceNotFound("Not in the system, please signup first"));
+    return;
+  }
+
+  res.status(200).json(user);
 }
 
 async function googleLogin(
@@ -154,6 +173,7 @@ export default {
   createUser,
   updateUser,
   deleteUser,
-  googleLogin
+  googleLogin,
+  getUserProfile
 }
 
