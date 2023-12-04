@@ -3,13 +3,13 @@ import { NextFunction, Request, Response } from "express"
 import ProductsService from "../services/productsService"
 import { ApiError } from "../errors/ApiError"
 
-export async function findAllProduct(_: Request, res: Response) {
+async function findAllProduct(_: Request, res: Response) {
   const products = await ProductsService.findAll()
 
   res.json(products);
 }
 
-export async function findOneProduct(
+async function findOneProduct(
   req: Request,
   res: Response,
   next: NextFunction
@@ -25,7 +25,7 @@ export async function findOneProduct(
   res.json(product);
 }
 
-export async function createOneProduct(
+async function createOneProduct(
   req: Request,
   res: Response,
   next: NextFunction
@@ -41,7 +41,7 @@ export async function createOneProduct(
   res.status(201).json(product)
 }
 
-export async function deleteOneProduct(
+async function deleteOneProduct(
   req: Request,
   res: Response,
   next: NextFunction
@@ -57,7 +57,7 @@ export async function deleteOneProduct(
   res.json(product);
 }
 
-export async function updateOneProduct(
+async function updateOneProduct(
   req: Request,
   res: Response,
   next: NextFunction

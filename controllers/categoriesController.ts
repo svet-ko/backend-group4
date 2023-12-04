@@ -11,12 +11,12 @@ interface ValidationError {
   };
 }
 
-export async function getAllCategories(_: Request, res: Response) {
+async function getAllCategories(_: Request, res: Response) {
   const categories = await CategoriesService.getAll();
   res.json(categories);
 }
 
-export async function getOneCategory(
+async function getOneCategory(
   req: Request,
   res: Response,
   next: NextFunction
@@ -31,7 +31,7 @@ export async function getOneCategory(
   res.json(category);
 }
 
-export async function createCategory(
+async function createCategory(
   req: Request,
   res: Response,
   next: NextFunction
@@ -45,7 +45,7 @@ export async function createCategory(
   }
 }
 
-export async function updateCategory(
+async function updateCategory(
   req: Request,
   res: Response,
   next: NextFunction
@@ -66,7 +66,7 @@ export async function updateCategory(
   res.status(200).json({ result });
 }
 
-export async function deleteCategory(
+async function deleteCategory(
   req: Request,
   res: Response,
   next: NextFunction
@@ -79,6 +79,14 @@ export async function deleteCategory(
     return;
   }
 
-  CategoriesService.deleteCategory(categoryId);
+  await CategoriesService.deleteCategory(categoryId);
   res.status(200).json({ category });
 }
+
+export default {
+  getOneCategory,
+  getAllCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+};

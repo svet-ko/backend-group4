@@ -92,7 +92,7 @@ async function getUserProfile(
     return;
   }
   const user = await usersService.getUserById(userId.id);
-  
+
   if (!user) {
     next(ApiError.resourceNotFound("Not in the system, please signup first"));
     return;
@@ -157,7 +157,7 @@ async function deleteUser(
       next(ApiError.resourceNotFound("User that you are trying to delete does not exist")); 
       return;
     }
-    UsersService.deleteUser(id);
+    await UsersService.deleteUser(id);
     const deletedUser = await UsersService.getUserById(id);
     if (deletedUser !== null) {
       next(ApiError.internal("Deleting failed")); 

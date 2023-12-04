@@ -11,7 +11,7 @@ export function checkPermission(
         next();
         return;
     } else {
-        next(ApiError.unauthorized("Permission unauthorized"));
+        next(ApiError.forbidden("Permission unauthorized"));
         return;
     }
 }
