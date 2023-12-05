@@ -3,8 +3,18 @@ import { NextFunction, Request, Response } from "express"
 import ProductsService from "../services/productsService"
 import { ApiError } from "../errors/ApiError"
 
-async function findAllProduct(_: Request, res: Response) {
-  const products = await ProductsService.findAll()
+async function findAllProduct(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  console.log(req.query);
+  const products = await ProductsService.findAll(req.query);
+
+  if (!products) {
+    next(ApiError.resourceNotFound("Products not found"))
+    return
+  }
 
   res.json(products);
 }

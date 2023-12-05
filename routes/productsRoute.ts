@@ -11,20 +11,20 @@ router.get("/:productId", ProductController.findOneProduct);
 
 router.post("/",
   validateProduct,
-  //authenticateUser,
-  //authorizePermission,
+  authenticateUser,
+  authorizePermission,
   ProductController.createOneProduct
 );
 
 router.delete("/:productId",
-  //authenticateUser,
-  //authorizePermission,
+  authenticateUser,
+  authorizePermission,
   ProductController.deleteOneProduct
 );
 
 router.put("/:productId",
-  //authenticateUser,
-  //authorizePermission,
+  authenticateUser,
+  authorizePermission,
   ProductController.updateOneProduct
 );
 

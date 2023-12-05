@@ -1,16 +1,27 @@
 import mongoose from "mongoose";
 
 import ProductRepo from "../models/Product";
-import { Product, ProductDTO, ProductToCreate } from "../types/products";
+import { ProductDTO, ProductTitleFilter, ProductToCreate } from "../types/products";
 import CategoryRepo from "../models/Category";
 import { Category } from "../types/category";
 import { OrderRequest } from "../types/orderRequest";
 
-async function findAll() {
-  const products = await ProductRepo.find().populate("category").exec();
-  
+async function findAll(filter: any) {
+  console.log(filter[0]);
+  const products = await ProductRepo.find({$text: {$search: filter[0] }}).populate("category").exec();
+  //console.log(products);
   return products;
 }
+
+// async function findAllByTitle(title: string = '') {
+//   const products = await ProductRepo.find({ title: { $regex: new RegExp(title, 'i') } }).populate("category").exec();
+//   return products;
+// }
+
+// async function findAllByCategoryId(categoryId: string = '') {
+//   const products = await ProductRepo.find({ category: { $eq: new mongoose.Types.ObjectId(categoryId) } }).populate("category").exec();
+//   return products;
+// }
 
 async function findOne(productId: string) {
   const id = new mongoose.Types.ObjectId(productId);
