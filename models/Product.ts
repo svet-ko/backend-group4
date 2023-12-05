@@ -1,3 +1,4 @@
+import { text } from "express"
 import mongoose from "mongoose"
 
 const Schema = mongoose.Schema
@@ -13,5 +14,5 @@ const ProductSchema = new Schema({
   },
   images: [{ type: String }]
 })
-
+ProductSchema.index({title: "text", category: "text"})
 export default mongoose.model("Product", ProductSchema)

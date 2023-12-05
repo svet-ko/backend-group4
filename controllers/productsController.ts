@@ -8,8 +8,12 @@ async function findAllProduct(
   res: Response,
   next: NextFunction
 ) {
-  console.log(req.query);
-  const products = await ProductsService.findAll(req.query);
+
+  const title = req.query.title as string;
+  const categoryId = req.query.categoryId as string;
+  const price = Number(req.query.price);
+  
+  const products = await ProductsService.findAll({title, categoryId, price});
 
   if (!products) {
     next(ApiError.resourceNotFound("Products not found"))

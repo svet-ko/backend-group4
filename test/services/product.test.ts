@@ -85,7 +85,7 @@ describe("Category controller", () => {
   });
 
   it("should return a list of products", async () => {
-    const products = await productsService.findAll();
+    const products = await productsService.findAll({title: '', price: 0, categoryId: ''});
     expect(products.length).toEqual(3);
   });
 
@@ -107,7 +107,7 @@ describe("Category controller", () => {
 
   it("should delete one product", async () => {
     await productsService.deleteOne(productOne._id.toString());
-    const products = await productsService.findAll();
+    const products = await productsService.findAll({title: '', price: 0, categoryId: ''});
     expect(products.length).toEqual(2);
   });
 });

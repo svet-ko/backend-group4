@@ -35,6 +35,6 @@ export const productToCreateSchema = z.object({
   .strict()
 });
 
-export const ProductFilterTitlesSchema = z.object({
-  title: z.string().optional().default(''),
-});
+// export const ProductFilterTitlesSchema = z.object({
+//   title: z.string().optional().default(''),
+// });
