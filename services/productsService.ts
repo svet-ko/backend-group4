@@ -1,16 +1,15 @@
 import mongoose from "mongoose";
 
 import ProductRepo from "../models/Product";
-import { ProductDTO, ProductToCreate } from "../types/products";
+import { ProductDTO, ProductTitleFilter, ProductToCreate } from "../types/products";
 import CategoryRepo from "../models/Category";
 import { Category } from "../types/category";
 import { OrderRequest } from "../types/orderRequest";
 import { number } from "zod";
 
-async function findAll(filter: {title: string, categoryId: string, price: number}) {
-  console.log('filter', filter);
+async function findAll(filter: ProductTitleFilter) {
   const {title, categoryId, price} = filter;
-  if (!categoryId) {
+  if (categoryId === '') {
     return await ProductRepo.find({
       $and: [
         { price: { $gte: price } },
@@ -26,16 +25,6 @@ async function findAll(filter: {title: string, categoryId: string, price: number
     ],
   }).populate("category").exec();
 }
-
-// async function findAllByTitle(title: string = '') {
-//   const products = await ProductRepo.find({ title: { $regex: new RegExp(title, 'i') } }).populate("category").exec();
-//   return products;
-// }
-
-// async function findAllByCategoryId(categoryId: string = '') {
-//   const products = await ProductRepo.find({ category: { $eq: new mongoose.Types.ObjectId(categoryId) } }).populate("category").exec();
-//   return products;
-// }
 
 async function findOne(productId: string) {
   const id = new mongoose.Types.ObjectId(productId);

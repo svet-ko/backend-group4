@@ -2,7 +2,6 @@ import express from "express"
 import mongoose from "mongoose"
 import "dotenv/config"
 import passport from "passport"
-import { loggingMiddleware } from "./middlewares/logging"
 import { apiErrorHandler } from "./middlewares/error"
 import { routeNotFound } from "./middlewares/routeNotFound"
 import { loginWithGoogle } from "./middlewares/loginWithGoogle"
@@ -14,6 +13,7 @@ import ordersRoute from "./routes/ordersRoute"
 import { connectDb } from "./utils/connectDb"
 import server from "./utils/server"
 import cors from "cors"
+import morgan from "morgan"
 const PORT = 8080;
 const app = express();
 app.use(express.json());
@@ -22,11 +22,8 @@ app.use(cors());
 connectDb();
 app.use(passport.initialize())
 passport.use(loginWithGoogle())
-//connectDb();
-app.get("/hello", loggingMiddleware, (_, res) => {
-  res.json({ msg: "hello, from Express.js!" });
-});
-app.use(loggingMiddleware);
+
+app.use(morgan('tiny'));
 app.use("/api/v1/categories", categoriesRoute);
 app.use("/api/v1/users", usersRoute);
 app.use("/api/v1/auth", authRoute);

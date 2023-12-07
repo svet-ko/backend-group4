@@ -8,5 +8,9 @@ export type ProductToCreate = Omit<ProductDTO, "category"> & {
   categoryId?: string;
 };
 
-//export type ProductTitleFilter = z.infer<typeof ProductFilterTitlesSchema>;
+export type ProductTitleFilter = {
+  title: string,
+  categoryId: string,
+  price: number
+};
 //export type FindAllProductsOptions = z.mergeTypes<PaginationType, ProductFilters>;

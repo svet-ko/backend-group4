@@ -2,18 +2,25 @@ import { NextFunction, Request, Response } from "express"
 
 import ProductsService from "../services/productsService"
 import { ApiError } from "../errors/ApiError"
+import { ProductTitleFilter } from "products";
 
 async function findAllProduct(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-
-  const title = req.query.title as string;
-  const categoryId = req.query.categoryId as string;
-  const price = Number(req.query.price);
+  const filter: ProductTitleFilter = {title: '', categoryId: '', price: 0};
+  if (req.query.title) {
+    filter.title = req.query.title as string
+  }
+  if (req.query.categoryId) {
+    filter.categoryId = req.query.categoryId as string
+  }
+  if (req.query.price) {
+    filter.price = Number(req.query.price)
+  }
   
-  const products = await ProductsService.findAll({title, categoryId, price});
+  const products = await ProductsService.findAll(filter);
 
   if (!products) {
     next(ApiError.resourceNotFound("Products not found"))
