@@ -1,4 +1,4 @@
 export type OrderRequest = {
-    id: string,
+    productId: string,
     quantity: number
 }

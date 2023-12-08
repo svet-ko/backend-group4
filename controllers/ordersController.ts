@@ -43,7 +43,7 @@ async function createOrder(req: Request, res: Response, next: NextFunction) {
     arr.map(async (item) => {
       const orderItem = new Item({
         orderId,
-        productId: item.id,
+        productId: item.productId,
         quantity: item.quantity,
       });
       await orderItem.save();
@@ -59,7 +59,7 @@ async function createOrder(req: Request, res: Response, next: NextFunction) {
       }
     })
   );
-  res.status(201).json({ newOrder });
+  res.status(201).json(newOrder);
 }
 
 async function deleteOrder(req: Request, res: Response, next: NextFunction) {
