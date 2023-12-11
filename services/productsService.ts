@@ -80,11 +80,11 @@ async function updateOne(
 async function getTotalPrice(
   orderItems: OrderRequest[]
 ): Promise<number>{
-  const inputIds = orderItems.map((item) => item.id);
+  const inputIds = orderItems.map((item) => item.productId);
   const products = await ProductRepo.find({_id: inputIds});
   const sum = products.reduce((acc, product) => {
     const inputTargetItem = orderItems.find((item) =>
-      product._id.equals(item.id)
+      product._id.equals(item.productId)
     );
     if (product.price) {
       return !!inputTargetItem
