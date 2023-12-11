@@ -26,7 +26,7 @@ async function getOrdersByUserId(
     next(ApiError.resourceNotFound("This user has no orders"));
     return;
   }
-  res.json({ orders });
+  res.json(orders);
 }
 
 async function createOrder(req: Request, res: Response, next: NextFunction) {

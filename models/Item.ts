@@ -5,13 +5,15 @@ const Schema = mongoose.Schema
 export const ItemSchema = new Schema({
   productId: {
     type: Schema.Types.ObjectId,
-    ref: "Product"
+    ref: "Product",
+    required: true
   },
   orderId: {
     type: Schema.Types.ObjectId,
-    ref: "Order"
+    ref: "Order",
+    required: true
   },
-  quantity: Number,
+  quantity: { type: Number, required: true}
 })
 
 export default mongoose.model("Item", ItemSchema, "items")

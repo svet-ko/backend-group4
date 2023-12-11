@@ -5,9 +5,13 @@ const Schema = mongoose.Schema
 const OrderSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
+    required: true
   },
-  totalPrice: Number
+  totalPrice: {
+    type: Number,
+    required: true
+  }
 })
 
 export default mongoose.model("Order", OrderSchema, "orders")
