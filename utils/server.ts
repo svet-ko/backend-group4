@@ -1,4 +1,4 @@
-import app from "..";
+import app from "../src";
 
 const PORT = 8080;
 

@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../../";
+import app from "../../src";
 import UserService from "../../src/services/usersService";
 import UsersRepo from "../../src/models/User"
 import connect, { MongoHelper } from "../dbHelper";

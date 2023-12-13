@@ -1,5 +1,5 @@
 import request from "supertest"
-import app from "../../"
+import app from "../../src"
 import ProductService from "../../src/services/productsService"
 import connect, { MongoHelper } from "../dbHelper"
 import { ProductToCreate } from "products";

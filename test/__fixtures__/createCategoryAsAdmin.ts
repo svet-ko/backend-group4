@@ -1,5 +1,5 @@
 import request from "supertest"
-import app from "../.."
+import app from "../../src"
 
 export async function createCategoryAsAdmin(token: string) {
   const responseCategory = await request(app).post("/api/v1/categories").set('Authorization', `Bearer ${token}`).send({

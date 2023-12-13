@@ -1,5 +1,5 @@
 import request from "supertest"
-import app from "../.."
+import app from "../../src"
 import { createCategoryAsAdmin } from "./createCategoryAsAdmin";
 
 export async function createProductAsAdmin(token: string) {
