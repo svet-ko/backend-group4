@@ -1,5 +1,5 @@
 import users from "./users";
-import usersService from "../../services/usersService";
+import usersService from "../../src/services/usersService";
 import {User} from "../../types/user";
 
 export async function createAdminWithToken() {

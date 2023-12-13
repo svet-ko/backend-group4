@@ -4,7 +4,7 @@ import ItemsService from "../services/itemsService";
 import ProductsService from "../services/productsService";
 import { ApiError } from "../errors/ApiError";
 import Item from "../models/Item";
-import { OrderRequest } from "../types/orderRequest";
+import { OrderRequest } from "../../types/orderRequest";
 
 async function getAllOrders(_: Request, res: Response, next: NextFunction) {
   const orders = await OrdersService.getAllOrders();

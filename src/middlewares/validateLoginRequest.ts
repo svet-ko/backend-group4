@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { loginRequestSchema } from "../schemas/loginRequestSchema";
+import { loginRequestSchema } from "../../schemas/loginRequestSchema";
 
 export async function validateLoginRequest(
     req: Request,

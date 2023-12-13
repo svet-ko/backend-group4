@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import { NextFunction, Response } from "express"
 import { ApiError } from "../errors/ApiError"
-import { AuthRequest, TokenPayload } from "../types/auth"
+import { AuthRequest, TokenPayload } from "../../types/auth"
 
 export function checkAuth(req: AuthRequest, _: Response, next: NextFunction) {
   const token = req.headers.authorization?.split(" ")[1];

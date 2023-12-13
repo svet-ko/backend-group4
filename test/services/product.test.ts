@@ -1,11 +1,11 @@
 import request from "supertest";
 
 import app from "../../";
-import CategoryService from "../../services/productsService";
+import CategoryService from "../../src/services/productsService";
 import connect, { MongoHelper } from "../dbHelper";
-import CategoryRepo from "../../models/Category";
-import ProductRepo from "../../models/Product";
-import productsService from "../../services/productsService";
+import CategoryRepo from "../../src/models/Category";
+import ProductRepo from "../../src/models/Product";
+import productsService from "../../src/services/productsService";
 import {Category} from "../../types/category";
 import { ProductToCreate } from "products";
 import mongoose from "mongoose";

@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 import ProductRepo from "../models/Product";
-import { ProductDTO, ProductTitleFilter, ProductToCreate } from "../types/products";
+import { ProductDTO, ProductTitleFilter, ProductToCreate } from "../../types/products";
 import CategoryRepo from "../models/Category";
-import { Category } from "../types/category";
-import { OrderRequest } from "../types/orderRequest";
+import { Category } from "../../types/category";
+import { OrderRequest } from "../../types/orderRequest";
 import { number } from "zod";
 
 async function findAll(filter: ProductTitleFilter) {

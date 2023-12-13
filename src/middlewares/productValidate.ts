@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { productToCreateSchema } from "../schemas/productSchema"
+import { productToCreateSchema } from "../../schemas/productSchema"
 
 export async function validateProduct(
   req: Request,

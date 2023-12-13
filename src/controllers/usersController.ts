@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken"
 import UsersRepo from "../models/User"
 import UsersService from "../services/usersService"
 import { ApiError } from "../errors/ApiError"
-import { LoginRequest } from "../types/auth"
-import { TokenPayload } from "../types/auth"
+import { LoginRequest } from "../../types/auth"
+import { TokenPayload } from "../../types/auth"
 import usersService from "../services/usersService"
 
 async function getAllUsers(_: Request, res: Response, next: NextFunction) {

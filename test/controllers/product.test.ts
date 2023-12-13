@@ -1,6 +1,6 @@
 import request from "supertest"
 import app from "../../"
-import ProductService from "../../services/productsService"
+import ProductService from "../../src/services/productsService"
 import connect, { MongoHelper } from "../dbHelper"
 import { ProductToCreate } from "products";
 import { createAdminWithToken } from "../__fixtures__/createAdminWithToken";

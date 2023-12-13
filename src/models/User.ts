@@ -14,6 +14,9 @@ const UserSchema = new Schema({
   password: {
     type: String
   },
+  address: {
+    type: String
+  },
   role: {
     type: String,
     enum: ['CUSTOMER', 'ADMIN'],
@@ -22,7 +25,6 @@ const UserSchema = new Schema({
   },
   avatar: {
     type: String,
-    //required: true,
     default: "https://api.lorem.space/image/face?w=640&h=480&r=867"
   }
 });

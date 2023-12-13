@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../../";
-import UserService from "../../services/usersService";
-import UsersRepo from "../../models/User"
+import UserService from "../../src/services/usersService";
+import UsersRepo from "../../src/models/User"
 import connect, { MongoHelper } from "../dbHelper";
 
 describe("User controllers", () => {
