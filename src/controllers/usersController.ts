@@ -29,7 +29,7 @@ async function getUserById(
     next(ApiError.resourceNotFound("User not found"));
     return;
   }
-  res.json({ user });
+  res.json(user);
 }
 
 async function createUser(req: Request, res: Response, next: NextFunction) {
@@ -59,6 +59,7 @@ async function login(
     next(ApiError.resourceNotFound("Not in the system, please signup first"));
     return;
   }
+
   const isValid = await bcrypt.compare(loginRequest.password, user.password as string);
   
   if (!isValid) {
@@ -137,13 +138,19 @@ async function updateUser(
   ) {
     const id = req.params.userId;
     const userData = req.body;
-    const user = UsersService.getUserById(id);
+    const user = await UsersService.getUserById(id);
     if (!user) {
       next(ApiError.resourceNotFound("User not found"));
       return;
     }
+    if (userData.password) {
+      if (user && !user.password) {
+        next(ApiError.forbidden("Old password is wrong"));
+        return;
+      }
+    }
     const updatedUser = await UsersService.updateUser(id, userData);
-    res.status(200).json({ updatedUser });
+    res.status(200).json(updatedUser);
 }
 
 async function deleteUser(

@@ -31,6 +31,11 @@ async function getToken(payload: TokenPayload) {
 
 async function updateUser(userId: string, updatedUser: Partial<User>) {
   const id = new mongoose.Types.ObjectId(userId);
+  if (updatedUser.password) {
+    const hashedPsw = await bcrypt.hash(updatedUser.password, 10);
+    updatedUser.password = hashedPsw;
+  }
+
   const result = await UsersRepo.updateOne({ _id: id }, { $set: updatedUser });
 
   if (!result) {
