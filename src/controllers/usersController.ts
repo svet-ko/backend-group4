@@ -143,8 +143,13 @@ async function updateUser(
       next(ApiError.resourceNotFound("User not found"));
       return;
     }
+
     if (userData.password) {
-      if (user && !user.password) {
+      if (!user.password) {
+        next(ApiError.forbidden("You are logged in with google. You don't have password in the system"));
+        return;
+      }
+      if (user && (user.password !== userData.password)) {
         next(ApiError.forbidden("Old password is wrong"));
         return;
       }
