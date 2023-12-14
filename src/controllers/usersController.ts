@@ -137,24 +137,28 @@ async function updateUser(
   next: NextFunction
   ) {
     const id = req.params.userId;
-    const userData = req.body;
+    const userUpdateData = req.body;
+    console.log('userData', userUpdateData);
     const user = await UsersService.getUserById(id);
     if (!user) {
       next(ApiError.resourceNotFound("User not found"));
       return;
     }
-
-    if (userData.password) {
+    console.log('user', user);
+    if (userUpdateData.password) {
       if (!user.password) {
         next(ApiError.forbidden("You are logged in with google. You don't have password in the system"));
         return;
       }
-      if (user && (user.password !== userData.password)) {
-        next(ApiError.forbidden("Old password is wrong"));
+      const isValid = await bcrypt.compare(userUpdateData.oldPassword, user.password as string);
+      console.log('isValid', isValid);
+  
+      if (!isValid) {
+        next(ApiError.unauthorized("Invalid old password"));
         return;
       }
     }
-    const updatedUser = await UsersService.updateUser(id, userData);
+    const updatedUser = await UsersService.updateUser(id, userUpdateData);
     res.status(200).json(updatedUser);
 }
 

@@ -15,7 +15,6 @@ router.get("/",
 router.post("/",
   validatePaymentRequest,
   authenticateUser,
-  authorizePermission,
   PaymentController.createPayment
 );
 
