@@ -138,20 +138,17 @@ async function updateUser(
   ) {
     const id = req.params.userId;
     const userUpdateData = req.body;
-    console.log('userData', userUpdateData);
     const user = await UsersService.getUserById(id);
     if (!user) {
       next(ApiError.resourceNotFound("User not found"));
       return;
     }
-    console.log('user', user);
     if (userUpdateData.password) {
       if (!user.password) {
         next(ApiError.forbidden("You are logged in with google. You don't have password in the system"));
         return;
       }
       const isValid = await bcrypt.compare(userUpdateData.oldPassword, user.password as string);
-      console.log('isValid', isValid);
   
       if (!isValid) {
         next(ApiError.unauthorized("Invalid old password"));
@@ -169,16 +166,19 @@ async function deleteUser(
   ) {
     const id = req.params.userId;
     const user = await UsersService.getUserById(id);
+
     if (user === null) {
       next(ApiError.resourceNotFound("User that you are trying to delete does not exist")); 
       return;
     }
     await UsersService.deleteUser(id);
     const deletedUser = await UsersService.getUserById(id);
+
     if (deletedUser !== null) {
       next(ApiError.internal("Deleting failed")); 
       return;
     }
+
     res.status(204).json({msg: "User was deleted successfuly"});
 }
 
