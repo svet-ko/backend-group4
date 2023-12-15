@@ -1,35 +1,70 @@
-# Backend Assignment - API
+# Introduction
 
-This is the README for an Express backend assignment that requires you to implement the REST APIs for a library management system or E-commerce based on the Entity-Relationship Diagram (ERD) assignment. The ERD assignment should outline the data model, including the relationships and attributes of entities within the system. You are tasked with designing and documenting the REST APIs according to the ERD specifications.
+Express.js API for a e-commerce app management system.
+The API allows users to perform CRUD operations on products, categories, orders, payment, shipment and user domains.
 
-## Introduction
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
+---
 
-This Express backend assignment involves building a RESTful API for a library management system or E-commerce. You are provided with an Entity-Relationship Diagram (ERD) assignment that outlines the data model, including the relationships and attributes of entities such as books, users, authors, and admin roles.
+## Table of content
 
-## Entity CRUD Operations
+- [Group 4](#group-4)
+- [Getting started](#getting-started)
+- [Running tests](#running-tests)
+- [Project structure](#project-structure)
+- [Deployment](#deployment)
 
-`Before` implementing JWT authentication, `you are required to create the basic CRUD` (Create, Read, Update, Delete) operations for the entities based on the specifications provided in the ERD assignment. This section focuses on designing and implementing the core functionality to manage and interact with the specified entities.
+## Group 4
 
-## Authentication
+- [Svetlana Korneeva](https://github.com/svet-ko) - Products, Payment, Shipment
+- [Ieva Vyliaudaite](https://github.com/microieva) - Users, Orders
+- [Md Touhidul Islam](https://github.com/mdtouhidulislam136) - Categories
 
-For security, this API should implement user authentication using JSON Web Tokens (JWT). Each user should have a unique username and password OR broker authentication. Certain admin endpoints may require special privileges for access.
+## Technologies
 
-## Minimum requirements
+- Typescript
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- Jest
 
-Please check the REST API slides where you can find the minimum requirements of the project.
+## Getting started
 
-## Response Format
+- Clone this project using `git clone https://github.com/svet-ko/backend-group4.git` command;
+- Create your `.env` from `.env.example` either by hand or with `cp .env.example .env` (macOS/Linux/WSL);
+- Fill the `.env` file with your MongoDB cluster credentials and JWT encoding secret;
+- Install the project dependencies with `yarn install`;
+- Run the project in dev mode with `yarn start`;
+- To compile possible enhancements of the project files run `yarn ts-watch`.
 
-All API responses should be provided in JSON format. A typical response should include a `status`, `data`, and an optional `message` field. The `status` field should indicate the success or failure of the request.
+## Running tests
 
-## Error Handling
+- Use `yarn test` command to run test cases;
 
-The API should include comprehensive error handling with clear and informative error messages. Errors should be accompanied by appropriate HTTP status codes.
+## Project structure
 
-## Testing
-
-Developers should conduct unit tests and integration tests to ensure the reliability and correctness of the API. Instructions for running the tests should be provided in the project's documentation.
+```
+.
+├── schemas
+├── src
+    ├── controllers
+    ├── errors
+    ├── middlewares
+    ├── models
+    ├── routes
+│   └── services
+├── test
+│   ├── __fixtures__
+│   ├── controllers
+│   └── services
+├── types
+└── utils
+```
 
 ## Deployment
 
-The API should be deployed before the **`DEADLINE`** which is end of Week 47 24th of Nov
+Access this project live [here](https://e-commerce-svet-ko.onrender.com/api/v1).
