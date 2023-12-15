@@ -16,7 +16,7 @@ export async function createProductAsAdmin(token: string) {
     ]
   });
 
-  const product = response.body.product;
+  const product = response.body;
 
   return product;
 }

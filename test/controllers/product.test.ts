@@ -38,9 +38,9 @@ describe("Product controllers", () => {
       ]
     });
 
-    expect(response.body.product).toHaveProperty("title");
+    expect(response.body).toHaveProperty("title");
 
-    expect(response.body).toMatchObject({ product: {
+    expect(response.body).toMatchObject({
         title: "Another Hoody",
         price: 150,
         description: "Another hoodie for your good boy",
@@ -49,10 +49,9 @@ describe("Product controllers", () => {
             "https://i.imgur.com/p8AjjXS.jpeg"
         ]
       } 
-    });
+    );
 
     expect(response.body).toEqual({
-      product: {
         title: "Another Hoody",
         price: 150,
         description: "Another hoodie for your good boy",
@@ -63,7 +62,7 @@ describe("Product controllers", () => {
         __v: expect.any(Number),
         _id: expect.any(String),
       },
-    });
+    );
   });
 
   it("Should not create a product with wrong category id", async () => {
@@ -88,8 +87,8 @@ describe("Product controllers", () => {
 
     const response = await request(app).get("/api/v1/products");
 
-    expect(response.body.products.length).toEqual(1);
-    expect(response.body.products[0]).toEqual(product);
+    expect(response.body.length).toEqual(1);
+    expect(response.body[0]).toEqual(product);
   });
 
   it("should return product by id", async () => {
@@ -99,7 +98,7 @@ describe("Product controllers", () => {
 
     const response = await request(app).get(`/api/v1/products/${productId}`);
 
-    expect(response.body.product).toEqual(product);
+    expect(response.body).toEqual(product);
   });
 
   it("should return error if searching product by wrong id", async () => {
@@ -114,9 +113,7 @@ describe("Product controllers", () => {
 
     const response = await request(app).delete(`/api/v1/products/${productId}`).set('Authorization', `Bearer ${token}`);
 
-    expect(response.body).toEqual({
-      product: product,
-    });
+    expect(response.body).toEqual(product);
   });
 
   it("should return error if deleting product by wrong id", async () => {
