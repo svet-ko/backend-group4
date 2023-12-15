@@ -22,7 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-//connectDb();
+connectDb();
 app.use(passport.initialize())
 passport.use(loginWithGoogle())
 
@@ -37,8 +37,8 @@ app.use("/api/v1/payments", paymentsRoute);
 app.use(apiErrorHandler);
 app.use(routeNotFound);
 
-// app.listen(PORT, () => {
-//   console.log(`👀 app is running at localhost:${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`👀 app is running at localhost:${PORT}`);
+});
 
 export default app;
