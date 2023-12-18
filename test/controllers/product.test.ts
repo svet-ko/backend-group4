@@ -24,7 +24,7 @@ describe("Product controllers", () => {
   });
 
   it("Should create a product", async () => {
-    const token = await createAdminWithToken();
+    const {token} = await createAdminWithToken();
     const category = await createCategoryAsAdmin(token);
     const categoryId = category._id;
 
@@ -66,7 +66,7 @@ describe("Product controllers", () => {
   });
 
   it("Should not create a product with wrong category id", async () => {
-    const token = await createAdminWithToken();
+    const {token} = await createAdminWithToken();
 
     const response = await request(app).post("/api/v1/products").set('Authorization', `Bearer ${token}`).send({
       "title": "Another Hoody",
@@ -82,7 +82,7 @@ describe("Product controllers", () => {
   });
 
   it("should return all products", async () => {
-    const token = await createAdminWithToken();
+    const {token} = await createAdminWithToken();
     const product = await createProductAsAdmin(token);
 
     const response = await request(app).get("/api/v1/products");
@@ -92,7 +92,7 @@ describe("Product controllers", () => {
   });
 
   it("should return product by id", async () => {
-    const token = await createAdminWithToken();
+    const {token} = await createAdminWithToken();
     const product = await createProductAsAdmin(token);
     const productId = product._id;
 
@@ -107,7 +107,7 @@ describe("Product controllers", () => {
   });
 
   it("should delete product by id", async () => {
-    const token = await createAdminWithToken();
+    const {token} = await createAdminWithToken();
     const product = await createProductAsAdmin(token);
     const productId = product._id;
 
@@ -123,7 +123,7 @@ describe("Product controllers", () => {
   });
 
   it("should update product by id", async () => {
-    const token = await createAdminWithToken();
+    const {token} = await createAdminWithToken();
     const product = await createProductAsAdmin(token);
 
     const productId = product._id;
@@ -134,7 +134,7 @@ describe("Product controllers", () => {
   })
 
   it("should not update product with non-existing category id", async () => {
-    const token = await createAdminWithToken();
+    const {token} = await createAdminWithToken();
     const product = await createProductAsAdmin(token);
 
     const productId = product._id;

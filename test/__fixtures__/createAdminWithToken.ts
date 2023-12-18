@@ -10,5 +10,5 @@ export async function createAdminWithToken() {
 
   const token = await usersService.getToken(adminData);
 
-  return token;
+  return {token, user};
 }
