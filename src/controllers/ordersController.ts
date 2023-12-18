@@ -84,7 +84,7 @@ async function deleteOrder(req: Request, res: Response, next: NextFunction) {
     return;
   }
   console.log('before success');
-  res.status(204).json(deletedOrder);
+  res.json(deletedOrder);
 }
 
 async function deleteAllOrders(_: Request, res: Response, next: NextFunction) {
@@ -96,9 +96,7 @@ async function deleteAllOrders(_: Request, res: Response, next: NextFunction) {
     next(ApiError.internal("Deleting failed"));
     return;
   }
-  res
-    .status(204)
-    .json({ msg: "All orders (and order items) deleted successfuly" });
+  res.json({ msg: "All orders (and order items) deleted successfuly" });
 }
 
 async function deleteAllOrdersByUserId(
@@ -116,7 +114,7 @@ async function deleteAllOrdersByUserId(
     next(ApiError.internal("Deleting failed"));
     return;
   }
-  res.status(204).json({ msg: "Orders deleted successfuly" });
+  res.json({ msg: "Orders deleted successfuly" });
 }
 
 export default {

@@ -141,6 +141,8 @@ describe("User controllers", () => {
 
     const deletedUser = await UsersRepo.findOne({email:"user@email.com"});
 
+    console.log(deletedUser);
+
     const adminToken = await UserService.getToken({
       id:"111",
       name: "admin",
@@ -152,7 +154,8 @@ describe("User controllers", () => {
     const response = await request(app)
       .delete(`/api/v1/users/${addedUser?._id.toString()}`)
       .set('Authorization', `Bearer ${adminToken}`);
-    expect(response.status).toBe(204);
+
+    expect(response.body.msg).toEqual('User was deleted successfuly');
   })
 
   it('Should login an existing user', async ()=> {

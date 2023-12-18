@@ -73,6 +73,6 @@ describe("Order controllers", () => {
       .set("Authorization", `Bearer ${token}`);
 
     console.log('delete order by id response', response.body);
-    expect(response.status).toBe(204);
+    expect(response.body).toMatchObject(order);
   });
 });

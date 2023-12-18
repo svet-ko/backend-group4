@@ -156,7 +156,7 @@ async function updateUser(
       }
     }
     const updatedUser = await UsersService.updateUser(id, userUpdateData);
-    res.status(200).json(updatedUser);
+    res.json(updatedUser);
 }
 
 async function deleteUser(
@@ -179,7 +179,7 @@ async function deleteUser(
       return;
     }
 
-    res.status(204).json({msg: "User was deleted successfuly"});
+    res.json({msg: "User was deleted successfuly"});
 }
 
 export default {
