@@ -13,7 +13,7 @@ import mongoose from "mongoose";
 import usersService from "../../src/services/usersService";
 import ordersService from "../../src/services/ordersService";
 
-describe("Products service", () => {
+describe("Orders service", () => {
   let mongoHelper: MongoHelper;
 
   let productOne: mongoose.Document;
@@ -115,5 +115,20 @@ describe("Products service", () => {
       await ordersService.deleteAllOrders();
       const orders = await ordersService.getAllOrders();
       expect(orders.length).toEqual(0);
+    });
+
+    it("should delete orders by user id", async () => {
+      const order = await createOrder();
+      await ordersService.deleteAllOrdersByUserId(order.userId.toString());
+      const orders = await ordersService.getAllOrders();
+      expect(orders.length).toEqual(0);
+    });
+
+    it("should get orders by user id", async () => {
+      const order = await createOrder();
+      await ordersService.getOrdersByUserId(order.userId.toString());
+      const orders = await ordersService.getAllOrders();
+      expect(orders.length).toEqual(1);
+      expect(orders[0].userId.toString()).toEqual(order.userId.toString())
     });
 });
