@@ -65,7 +65,6 @@ async function createOrder(req: Request, res: Response, next: NextFunction) {
 async function deleteOrder(req: Request, res: Response, next: NextFunction) {
   const id = req.params.orderId;
   const order = await OrdersService.getOrderById(id);
-  console.log('order', order);
   if (order === null) {
     next(
       ApiError.resourceNotFound(
@@ -75,15 +74,13 @@ async function deleteOrder(req: Request, res: Response, next: NextFunction) {
     return;
   }
   const deletedOrder = await OrdersService.deleteOrder(id);
-  console.log('deletedOrder', deletedOrder);
   await ItemsService.deleteItemsByOrderId(id);
   const deletedOrderInTheRepo = await OrdersService.getOrderById(id);
-  console.log('deletedOrderInTheRepo', deletedOrderInTheRepo);
   if (deletedOrderInTheRepo !== null) {
     next(ApiError.internal("Deleting failed"));
     return;
   }
-  console.log('before success');
+  
   res.json(deletedOrder);
 }
 

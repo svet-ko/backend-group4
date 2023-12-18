@@ -105,7 +105,6 @@ describe("User controllers", () => {
   
     const userUpdates = {
       name: "UPDATED USER",
-      //password: "updated_password"
     }
   
     const adminToken = await UserService.getToken({
@@ -140,8 +139,6 @@ describe("User controllers", () => {
     });
 
     const deletedUser = await UsersRepo.findOne({email:"user@email.com"});
-
-    console.log(deletedUser);
 
     const adminToken = await UserService.getToken({
       id:"111",

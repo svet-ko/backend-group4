@@ -72,7 +72,6 @@ describe("Order controllers", () => {
       .delete(`/api/v1/orders/${order._id}`)
       .set("Authorization", `Bearer ${token}`);
 
-    console.log('delete order by id response', response.body);
     expect(response.body).toMatchObject(order);
   });
 });
