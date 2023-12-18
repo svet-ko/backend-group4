@@ -10,7 +10,7 @@ import {Category} from "../../types/category";
 import { ProductToCreate } from "products";
 import mongoose from "mongoose";
 
-describe("Category controller", () => {
+describe("Products service", () => {
   let mongoHelper: MongoHelper;
 
   let productOne: mongoose.Document;
