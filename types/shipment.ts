@@ -8,7 +8,6 @@ export type Shipment = z.infer<typeof shipmentSchema> & {
 
 };
 export type CreateShipmetInput = Omit<Shipment, "_id"> & {
-  address: string,
   userId: mongoose.Types.ObjectId;
 };
 

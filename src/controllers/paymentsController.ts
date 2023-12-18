@@ -9,7 +9,6 @@ async function createPayment(
   next: NextFunction
 ) {
   const newPayment = req.body;
-  console.log(newPayment);
 
   const payment = await paymentsService.createOne(newPayment);
 

@@ -42,20 +42,14 @@ async function createOne(newPayment: createPaymentInput) {
           accountNumber,
           paymentDate,
         });
-        console.log('createdPayment', createdPayment);
+
         const createdShipment = await shipmentService.createShipment({
           ...shipmentInfo,
-          address: user.address as string,
           userId: new mongoose.Types.ObjectId(userId),
         });
-        console.log('createdShipment', createdShipment);
+
         await createdPayment.save();
-        // await OrderRepo.findByIdAndUpdate(order._id, {
-        //   paymentStatus: "success",
-        //   paymentId: createdPayment._id,
-        //   shipmentId: createdShipment._id,
-        //   shipmentStatus: "shipped",
-        // });
+
         return {
           ...createdPayment.toObject(),
           shipment: createdShipment,

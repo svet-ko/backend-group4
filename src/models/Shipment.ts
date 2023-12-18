@@ -8,10 +8,6 @@ const ShipmentSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    address: {
-      type: Schema.Types.String,
-      ref: "User",
-    },
     shippingPrice: {
       type: Number,
       required: true,
