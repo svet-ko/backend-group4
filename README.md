@@ -35,7 +35,7 @@ The API allows users to perform CRUD operations on products, categories, orders,
 
 ## ERD Diagram
 
-![ERD](https://drive.google.com/uc?export=view&id=1jjeSr0bQ7g-a4xA-V-YK421qKErqz5QB)
+![ERD](https://drive.google.com/uc?export=view&id=10TvixLinwuDQOj_i0NRJYJGqxBFUZ8VO)
 
 ## Getting started
 
