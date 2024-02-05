@@ -35,7 +35,7 @@ The API allows users to perform CRUD operations on products, categories, orders,
 
 ## ERD Diagram
 
-![ERD](https://drive.google.com/uc?export=view&id=10TvixLinwuDQOj_i0NRJYJGqxBFUZ8VO)
+![ERD](https://drive.google.com/uc?export=view&id=1pnwyurjxSmQK_CbJcKscwZj3Zi8iMVyi)
 
 ## Getting started
 
@@ -72,4 +72,4 @@ The API allows users to perform CRUD operations on products, categories, orders,
 
 ## Deployment
 
-Access this project live [here](https://e-commerce-svet-ko.onrender.com/api/v1).
+Do not hesitate to access this project by [the link](https://main--marvelous-torte-2b4ae0.netlify.app/) to try it out.
