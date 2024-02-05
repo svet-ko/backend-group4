@@ -13,6 +13,7 @@ The API allows users to perform CRUD operations on products, categories, orders,
 ## Table of content
 
 - [Group 4](#group-4)
+- [ERD Diagram](#erd-diagram)
 - [Getting started](#getting-started)
 - [Running tests](#running-tests)
 - [Project structure](#project-structure)
@@ -31,6 +32,10 @@ The API allows users to perform CRUD operations on products, categories, orders,
 - Express.js
 - MongoDB (Mongoose)
 - Jest
+
+## ERD Diagram
+
+![ERD](https://drive.google.com/uc?export=view&id=1jjeSr0bQ7g-a4xA-V-YK421qKErqz5QB)
 
 ## Getting started
 
